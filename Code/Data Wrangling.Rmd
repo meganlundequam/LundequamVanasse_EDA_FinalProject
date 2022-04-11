@@ -1,6 +1,6 @@
 ---
 title: "Data Wrangling"
-author: "Megan Lundequam & Same Vanasse"
+author: "Megan Lundequam, Sam Vanasse, & Casey Slaught"
 date: "3/30/2022"
 output: pdf_document
 ---
