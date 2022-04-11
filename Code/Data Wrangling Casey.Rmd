@@ -1,0 +1,93 @@
+---
+title: "Data Wrangling"
+author: "Megan Lundequam, Same Vanasse and Casey Slaught"
+date: "3/30/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidycensus)
+library(tidyverse)
+options(tigris_use_cache = TRUE)
+
+census_api_key("a8cad28557bae7c89aae6ea747549dd4816c6fbd")
+```
+
+```{r}
+allCensusVariables = load_variables(2020, "acs5", cache=TRUE)
+# View(allCensusVariables)
+
+censusVariables = c(
+  "Median Family Income" = "B19113_001",
+  "Total Population" = "B25026_001" # in occupied housing units
+)
+```
+
+
+```{r census}
+# American Community Survey (ACS) has data on income, decennial does not
+# ACS has yearly data, decennial is every 10 years
+
+getCensusIncomeData = function(geography="county", state="NC") {
+  # gets ACS census data from 2010 to 2020
+  
+  dataList = list()
+  for (i in 1:11) {
+    year = 2009 + i
+    data = get_acs(state=state,
+                   geography=geography,
+                   year=year,
+                   geometry = TRUE,
+                   variables=censusVariables["Median Family Income"]) %>%
+      select(GEOID, NAME, estimate, geometry) %>%
+      mutate(Year=year)
+    
+    if (geography == "state") {
+      data = data %>% mutate(State=state.abb[match(NAME, state.name)])
+    } else if (geography == "county") {
+      data = data %>%
+        mutate(
+          County=strsplit(NAME, ', ')[[1]][1],
+          State=state.abb[match(strsplit(NAME, ', ')[[1]][2],state.name)])
+    }
+    
+    dataList[[i]] = data # add it to your list
+  }
+  
+  censusData = do.call(rbind, dataList)
+  censusData 
+}
+
+
+data = get_acs(state="NC", 
+               geography="county", # state, county, block, block group 
+               year=2010,
+               geometry = TRUE,
+               variables=censusVariables["Median Family Income"]) %>%
+  select(GEOID, NAME, estimate, geometry)
+
+View(data)
+
+
+geography = "county"
+state = "NC"
+censusData = getCensusIncomeData(geography=geography, state=state)
+# View(censusData)
+
+write.csv(censusData, paste("../Data/census_acs_", state, "_", geography, ".csv", sep=""))
+
+filePath = paste("../Data/census_acs_", state, "_", geography, "2.csv", sep="")
+st_write(censusData, filePath)
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

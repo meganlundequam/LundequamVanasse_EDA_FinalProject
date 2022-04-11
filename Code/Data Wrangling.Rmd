@@ -9,7 +9,6 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidycensus)
 library(tidyverse)
-library(tigris)
 options(tigris_use_cache = TRUE)
 
 census_api_key("a8cad28557bae7c89aae6ea747549dd4816c6fbd")
@@ -65,6 +64,19 @@ getCensusData = function(geography="state") {
   censusData = do.call(rbind, dataList)
   censusData 
 }
+
+
+data = get_acs(geography="state", # state, county, block, block group 
+               year=2010,
+               geometry = TRUE,
+               variables=c(
+                censusVariables["Median Family Income"],
+                censusVariables["Total Population"])) #%>%  
+  #pivot_wider(id_cols="NAME", names_from="variable", values_from=c("estimate", "geometry")) #%>%
+  #mutate(Year=year)
+    
+View(data)
+
 
 geography = "county"
 censusData = getCensusData(geography=geography)
