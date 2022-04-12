@@ -1,0 +1,46 @@
+---
+title: "Data Exploration"
+author: "Megan Lundequam, Casey Slaught, and Same Vanasse"
+date: "3/30/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(scales)
+library(sf)
+library(tidyverse)
+
+theme_set(theme_classic())
+
+```
+
+```{r, censusIncome, fig.height=12}
+
+censusData = st_read("../Data/Census/NC_county.geojson")
+
+ggplot(censusData[censusData$Year==2020,], 
+       aes(x=MedianHouseholdIncome, y=reorder(CountyShort, MedianHouseholdIncome))) +
+  geom_point() + 
+  scale_x_continuous(labels=comma) + 
+  labs(x="Median Household Income", y="NC Counties")
+
+```
+
+
+
+```{r, censusMapping, fig.height=10, fig.width=14}
+
+generators = st_read("../Data/Processed/generators.geojson")
+
+
+ggplot() + 
+  geom_sf(aes(fill=MedianHouseholdIncome), data=censusData) + 
+  geom_sf(aes(color=Technology), alpha=0.8, size=2, data=generators) + 
+  scale_y_continuous(labels=comma) + 
+  scale_fill_gradient(labels=comma) + 
+  labs(color="Generator Type", fill="Median Household Income") + 
+  theme_void() 
+
+
+```

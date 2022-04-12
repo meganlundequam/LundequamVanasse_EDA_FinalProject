@@ -1,0 +1,90 @@
+---
+title: "Wrangling_ML"
+author: "Megan Lundequam & Same Vanasse & Casey Slaught"
+date: "4/11/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Set up your session
+
+```{r, message = FALSE}
+getwd()
+library(plyr)
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+
+
+```
+
+## Wrangling
+```{r}
+energy.data.plant <- read.csv("../Data/Raw/2___Plant_Y2020_ready.csv", fileEncoding='UTF-8-BOM')
+
+colnames(energy.data.plant)
+
+summary(energy.data.plant$State)
+
+# Select NC and data of interest
+energy.data.plant.NC <- filter(energy.data.plant, State == "NC")
+
+energy.data.plant.NC.locations <- select(energy.data.plant.NC, Utility.ID, Utility.Name, Plant.Code, Plant.Name, City, State, County, Latitude, Longitude, Primary.Purpose..NAICS.Code.)
+
+```
+
+```{r}
+energy.data.generator <- read.csv("../Data/Raw/3_1_Generator_Y2020.csv", fileEncoding='UTF-8-BOM')
+
+energy.data.generator.NC <- filter(energy.data.generator, State == "NC")
+energy.data.generator.NC.type <- select(energy.data.generator.NC, Utility.ID, Utility.Name, Plant.Code, Plant.Name, State, County, Technology, Energy.Source.1)
+```
+
+```{r}
+#joining
+energy.data.plant.generator.NC <- left_join(energy.data.generator.NC.type, energy.data.plant.NC.locations, by = "Plant.Code")
+
+```
+
+```{r}
+# Save processed file
+write.csv(energy.data.plant.generator.NC, row.names = FALSE, 
+          file = "../Data/Processed/longlat_generators_NC.csv")
+
+```
+
+## Creating a spatial dataframe from coordinate columns
+
+```{r Create a spatial dataframe from coordinate data}
+
+library(sf)
+library(ggplot2)
+
+#Read in our processed EPA Air dataset, setting the Date column to be dates
+NCGenerators <- read.csv("../Data/Processed/longlat_generators_NC", stringsAsFactors = TRUE)
+
+#Wrangle so each site has only one record, computing mean ozone and PM2.5 at that site
+EPAair.sites <- EPAair %>% 
+  group_by(Site.Name, COUNTY, SITE_LATITUDE, SITE_LONGITUDE) %>% 
+  summarize(
+    mean_Ozone = mean(Ozone, na.rm=T),    #What does "na.rm=T" do? Is it necessary? 
+    mean_PM25 = mean(PM2.5, na.rm=T),
+    count_all = n(),
+    count_Ozone = sum(!is.na(Ozone)),
+    count_PM25 = sum(!is.na(PM2.5)))
+
+#Convert to a spatial dataframe
+NCGenerators.sf <- NCGenerators %>% 
+  st_as_sf(coords = c('Longitude','Latitude'),
+           crs=4326) #this command creates this table as a simple feature. tell the code what to use as x and y coordinates and specify coordinate reference system 4326
+st_write(NCGenerators.sf, "../Data/Processed/generators.geojson")
+
+
+ggplot() + geom_sf(data=NCGenerators.sf,aes(color= Technology))
+#View the data using the methods above...
+
+```

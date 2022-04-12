@@ -7,7 +7,10 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(plyr)
+library(sf)
 library(tidycensus)
+library(tidyr)
 library(tidyverse)
 options(tigris_use_cache = TRUE)
 
@@ -41,15 +44,15 @@ getCensusIncomeData = function(geography="county", state="NC") {
                    geometry = TRUE,
                    variables=censusVariables["Median Family Income"]) %>%
       select(GEOID, NAME, estimate, geometry) %>%
-      mutate(Year=year)
+      mutate(Year=year) %>%
+      plyr::rename(., c(estimate="MedianHouseholdIncome"))
     
     if (geography == "state") {
       data = data %>% mutate(State=state.abb[match(NAME, state.name)])
     } else if (geography == "county") {
       data = data %>%
-        mutate(
-          County=strsplit(NAME, ', ')[[1]][1],
-          State=state.abb[match(strsplit(NAME, ', ')[[1]][2],state.name)])
+        separate(NAME, c("County", "State"), sep=", ", remove=F) %>%
+        separate(County, c("CountyShort", NA), sep=" County", remove=F)
     }
     
     dataList[[i]] = data # add it to your list
@@ -60,34 +63,45 @@ getCensusIncomeData = function(geography="county", state="NC") {
 }
 
 
-data = get_acs(state="NC", 
-               geography="county", # state, county, block, block group 
-               year=2010,
-               geometry = TRUE,
-               variables=censusVariables["Median Family Income"]) %>%
-  select(GEOID, NAME, estimate, geometry)
-
-View(data)
-
-
 geography = "county"
 state = "NC"
 censusData = getCensusIncomeData(geography=geography, state=state)
 # View(censusData)
 
-write.csv(censusData, paste("../Data/census_acs_", state, "_", geography, ".csv", sep=""))
-
-filePath = paste("../Data/census_acs_", state, "_", geography, "2.csv", sep="")
+filePath = paste("../Data/Census/", state, "_", geography, ".geojson", sep="")
 st_write(censusData, filePath)
 
 ```
 
-## Including Plots
+```{r}
 
-You can also embed plots, for example:
+generators = st_read("../Data/Processed/generators.geojson") %>%
+  plyr::rename(., c(County.x="CountyShort")) %>% 
+  st_transform(4269)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+censusData2020 = censusData %>%
+  filter(Year==2020)
+
+st_crs(generators) == st_crs(censusData2020)
+
+generatorsCensus = generators %>%
+  st_join(censusData2020, join=st_contains, left=TRUE, largest=TRUE)
+
+generatorsCensus = generatorsCensus %>% 
+  plyr::rename(., c(Utility.ID.x="Utility.ID", 
+                    Plant.Name.x="Plant.Name",
+                    Utility.Name.x="Utility.Name",
+                    CountyShort.x="County.Short")) %>% 
+  select(-State.x)
+
+
+x = st_join(censusData, newGenerators)
+
+ggplot() + 
+  geom_sf(aes(color=Technology), alpha=0.8, size=2, data=x) + 
+
+
+plot(x)
+
+
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
