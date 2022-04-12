@@ -68,14 +68,14 @@ library(ggplot2)
 NCGenerators <- read.csv("../Data/Processed/longlat_generators_NC", stringsAsFactors = TRUE)
 
 #Wrangle so each site has only one record, computing mean ozone and PM2.5 at that site
-EPAair.sites <- EPAair %>% 
-  group_by(Site.Name, COUNTY, SITE_LATITUDE, SITE_LONGITUDE) %>% 
-  summarize(
-    mean_Ozone = mean(Ozone, na.rm=T),    #What does "na.rm=T" do? Is it necessary? 
-    mean_PM25 = mean(PM2.5, na.rm=T),
-    count_all = n(),
-    count_Ozone = sum(!is.na(Ozone)),
-    count_PM25 = sum(!is.na(PM2.5)))
+#EPAair.sites <- EPAair %>% 
+ # group_by(Site.Name, COUNTY, SITE_LATITUDE, SITE_LONGITUDE) %>% 
+ # summarize(
+  #  mean_Ozone = mean(Ozone, na.rm=T),    #What does "na.rm=T" do? Is it necessary? 
+   # mean_PM25 = mean(PM2.5, na.rm=T),
+   # count_all = n(),
+  #  count_Ozone = sum(!is.na(Ozone)),
+  #  count_PM25 = sum(!is.na(PM2.5)))
 
 #Convert to a spatial dataframe
 NCGenerators.sf <- NCGenerators %>% 
@@ -86,5 +86,62 @@ st_write(NCGenerators.sf, "../Data/Processed/generators.geojson")
 
 ggplot() + geom_sf(data=NCGenerators.sf,aes(color= Technology))
 #View the data using the methods above...
+
+```
+
+
+
+categorize 
+```{r}
+generatorsCensus2020 = st_read("../Data/Processed/generatorsCensus2020.geojson")
+generatorsCensusNoGeometry = st_drop_geometry(generatorsCensus2020)
+summary(as.factor(generatorsCensusNoGeometry$Energy.Source.1))
+
+# adding "Fuel Type" column according to reference table 28 of LayoutY2020
+
+generatorsCensusCategories <- generatorsCensusNoGeometry %>%
+  mutate(
+    Fuel.Type = case_when(
+      Energy.Source.1 == "AB" ~ "Solid Renewable Fuel",
+      Energy.Source.1 == "BIT" ~ "Coal",
+      Energy.Source.1 == "BLQ" ~ "Liquid Renewable Fuel",
+      Energy.Source.1 == "DFO" ~ "Petroleum Product",
+      Energy.Source.1 == "LFG" ~ "Gaseous Renewable Fuel",
+      Energy.Source.1 == "MWH" ~ "Energy Storage",
+      Energy.Source.1 == "NG" ~ "Natural Gas",
+      Energy.Source.1 == "NUC" ~ "Nuclear",
+      Energy.Source.1 == "OBG" ~ "Gaseous Renewable Fuel",
+      Energy.Source.1 == "SUN" ~ "Solar",
+      Energy.Source.1 == "WAT" ~ "Hydroelectric",
+      Energy.Source.1 == "WDS" ~ "Solid Renewable Fuel",
+      Energy.Source.1 == "WH" ~ "Waste Heat",
+      Energy.Source.1 == "WND" ~ "Wind")
+  )
+
+summary(as.factor(generatorsCensusCategories$Fuel.Type))
+
+# adding renewable v fossil fuel column according to reference table 28 of LayoutY2020
+generatorsCensusCategoriesComplete <- generatorsCensusCategories %>%
+  mutate(
+    Renewable.v.FossilFuel = case_when(
+      Fuel.Type == "Coal" ~ "Fossil Fuel",
+      Fuel.Type == "Energy Storage" ~ "Other",
+      Fuel.Type == "Gaseous Renewable Fuel" ~ "Renewable Fuel",
+      Fuel.Type == "Hydroelectric" ~ "Renewable Fuel",
+      Fuel.Type == "Liquid Renewable Fuel" ~ "Renewable Fuel",
+      Fuel.Type == "Natural Gas" ~ "Fossil Fuel",
+      Fuel.Type == "Nuclear" ~ "Nuclear",
+      Fuel.Type == "Petroleum Product" ~ "Fossil Fuel",
+      Fuel.Type == "Solar" ~ "Renewable Fuel",
+      Fuel.Type == "Solid Renewable Fuel" ~ "Renewable Fuel",
+      Fuel.Type == "Waste Heat" ~ "Other",
+      Fuel.Type == "Wind" ~ "Renewable Fuel"
+    )
+  )
+
+summary(as.factor(generatorsCensusCategoriesComplete$Renewable.v.FossilFuel))
+
+write.csv(generatorsCensusCategoriesComplete, row.names = FALSE, 
+          file = "../Data/Processed/generatorsCensusCategoriesComplete.csv")
 
 ```
