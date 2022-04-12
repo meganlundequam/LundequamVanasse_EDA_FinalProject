@@ -145,3 +145,10 @@ write.csv(generatorsCensusCategoriesComplete, row.names = FALSE,
           file = "../Data/Processed/generatorsCensusCategoriesComplete.csv")
 
 ```
+
+```{r}
+
+
+
+```
+

@@ -1,0 +1,74 @@
+---
+title: "Data Exploration"
+author: "Megan Lundequam, Casey Slaught, and Same Vanasse"
+date: "3/30/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(kableExtra)
+library(knitr)
+
+library(lubridate)
+
+```
+
+```{r creating summary tables}
+
+generatorsCensusCategoriesCompSummary <- read.csv("../Data/Processed/generatorsCensusCategoriesComplete.csv", stringsAsFactors = TRUE)
+
+generatorsCensusCategoriesCompSummary$County.Short <- 
+
+generatorsCensusCategoriesCompSumm1 <- 
+  generatorsCensusCategoriesCompSummary %>%
+  select(Utility.ID, Utility.Name, County.Short, Fuel.Type, Renewable.v.FossilFuel)
+  group_by(generatorsCensusCategoriesCompSummary$County.Short) %>%
+  filter(!is.na(Utility.ID)) %>%
+  dplyr::summarise(n = count(Utility.ID))
+
+generatorsCensusCategoriesCompSumm2 <-
+  generatorsCensusCategoriesCompSumm1 %>%
+  dplyr::summarise(gen = cur_data(Fuel.Type))
+                   #TotalPlants = n(Utility.ID))
+                   
+
+```
+
+Create a second R chunk to create a summary dataset with the mean, minimum, maximum, and standard deviation of total nitrogen concentrations for each lake. Create a second summary dataset that is identical except that it evaluates total phosphorus. Customize the chunk options such that the code is run but not displayed in the final document.
+
+```{r creating summary datasets, include=FALSE}
+
+NTL.nutrient.data.nitrogen.summary <-
+  NTL.nutrient.data %>%
+  group_by(lakename) %>% 
+  filter(!is.na(tn_ug)) %>%
+  dplyr::summarise(meannit = mean(tn_ug), 
+            maxnit = max(tn_ug), 
+            minnit = min(tn_ug), 
+            sdnit = sd(tn_ug))
+
+NTL.nutrient.data.phosphorus.summary <-
+  NTL.nutrient.data %>%
+  group_by(lakename) %>% 
+  filter(!is.na(tp_ug)) %>%
+  dplyr::summarise(meanphos = mean(tp_ug), 
+            maxphos = max(tp_ug), 
+            minphos = min(tp_ug), 
+            sdphos = sd(tp_ug))
+
+```
+
+
+Create a third R chunk that uses the function `kable` in the knitr package to display two tables: one for the summary dataframe for total N and one for the summary dataframe of total P. Use the `caption = " "` code within that function to title your tables. Customize the chunk options such that the final table is displayed but not the code used to generate the table.
+
+```{r creating table with kable, echo=FALSE}
+
+knitr::kable(NTL.nutrient.data.nitrogen.summary,
+             caption = "Summary Statistics for Nitrogen Concentrations in NC Lakes")
+knitr::kable(NTL.nutrient.data.phosphorus.summary,
+             caption = "Summary Statistics for Phosphorus Concentrations in NC Lakes")
+
+```
