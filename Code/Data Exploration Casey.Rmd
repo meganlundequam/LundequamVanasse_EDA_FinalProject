@@ -42,5 +42,16 @@ ggplot() +
   labs(color="Generator Type", fill="Median Household Income") + 
   theme_void() 
 
+```
+
+```{r, Sam}
+
+generatorsCensus2020 = st_read("../Data/Processed/generatorsCensus2020.geojson")
+generatorsCensusNoGeometry = st_drop_geometry(generatorsCensus2020)
+
+class(generatorsCensus2020)
+class(generatorsCensusNoGeometry)
 
 ```
+
+

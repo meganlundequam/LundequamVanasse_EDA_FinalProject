@@ -92,16 +92,8 @@ generatorsCensus = generatorsCensus %>%
                     Plant.Name.x="Plant.Name",
                     Utility.Name.x="Utility.Name",
                     CountyShort.x="County.Short")) %>% 
-  select(-State.x)
+  select(-ends_with(".y"), -State.x)
 
-
-x = st_join(censusData, newGenerators)
-
-ggplot() + 
-  geom_sf(aes(color=Technology), alpha=0.8, size=2, data=x) + 
-
-
-plot(x)
-
+st_write(censusData, "../Data/Processed/generatorsCensus2020.geojson")
 
 ```
