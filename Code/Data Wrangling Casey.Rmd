@@ -87,13 +87,13 @@ st_crs(generators) == st_crs(censusData2020)
 generatorsCensus = generators %>%
   st_join(censusData2020, join=st_contains, left=TRUE, largest=TRUE)
 
-# generatorsCensus = generatorsCensus %>% 
-#   plyr::rename(., c(Utility.ID.x="Utility.ID", 
-#                     Plant.Name.x="Plant.Name",
-#                     Utility.Name.x="Utility.Name",
-#                     CountyShort.x="County.Short")) %>% 
-#   select(-ends_with("\.y"), -State.x)
+generatorsCensus = generatorsCensus %>%
+  plyr::rename(., c(Utility.ID.x="Utility.ID",
+                    Plant.Name.x="Plant.Name",
+                    Utility.Name.x="Utility.Name",
+                    CountyShort.x="County.Short")) %>%
+  select(-ends_with(".y"), -State.x)
 
-st_write(censusData, "../Data/Processed/generatorsCensus2020.geojson")
+st_write(generatorsCensus, "../Data/Processed/generatorsCensus2020.geojson")
 
 ```

@@ -33,6 +33,9 @@ ggplot(censusData[censusData$Year==2020,],
 
 generators = st_read("../Data/Processed/generators.geojson")
 
+# TODO: color different variables manually
+# TODO: make bigger by capacity
+
 ggplot() + 
   geom_sf(aes(fill=MedianHouseholdIncome), data=censusData) + 
   geom_sf(aes(color=Technology), alpha=0.8, size=2, data=generators) + 
