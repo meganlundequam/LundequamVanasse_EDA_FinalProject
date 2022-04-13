@@ -35,6 +35,8 @@ censusVariables = c(
 getCensusIncomeData = function(geography="county", state="NC") {
   # gets ACS census data from 2010 to 2020
   
+  # TODO: add more census variables
+  
   dataList = list()
   for (i in 1:11) {
     year = 2009 + i
@@ -75,9 +77,54 @@ st_write(censusData, filePath)
 
 ```{r}
 
+generatorsNc = read.csv("../Data/Processed/longlat_generators_NC.csv") %>%
+  st_as_sf(coords = c('Longitude','Latitude'), crs=4269) %>%
+  plyr::rename(., c(County.x="CountyShort")) %>% 
+  mutate(FuelType=case_when(
+      Energy.Source.1 == "AB" ~ "Solid Renewable Fuel",
+      Energy.Source.1 == "BIT" ~ "Coal",
+      Energy.Source.1 == "BLQ" ~ "Liquid Renewable Fuel",
+      Energy.Source.1 == "DFO" ~ "Petroleum Product",
+      Energy.Source.1 == "LFG" ~ "Gaseous Renewable Fuel",
+      Energy.Source.1 == "MWH" ~ "Energy Storage",
+      Energy.Source.1 == "NG" ~ "Natural Gas",
+      Energy.Source.1 == "NUC" ~ "Nuclear",
+      Energy.Source.1 == "OBG" ~ "Gaseous Renewable Fuel",
+      Energy.Source.1 == "SUN" ~ "Solar",
+      Energy.Source.1 == "WAT" ~ "Hydroelectric",
+      Energy.Source.1 == "WDS" ~ "Solid Renewable Fuel",
+      Energy.Source.1 == "WH" ~ "Waste Heat",
+      Energy.Source.1 == "WND" ~ "Wind",
+      TRUE ~ "Unknown"
+  ))
+
+st_write(generatorsNc, "../Data/Processed/generatorsFuelType.geojson")
+
+```
+
+
+```{r}
+
 generators = st_read("../Data/Processed/generators.geojson") %>%
   plyr::rename(., c(County.x="CountyShort")) %>% 
-  st_transform(4269)
+  st_transform(4269) %>%
+  mutate(FuelType=case_when(
+      Energy.Source.1 == "AB" ~ "Solid Renewable Fuel",
+      Energy.Source.1 == "BIT" ~ "Coal",
+      Energy.Source.1 == "BLQ" ~ "Liquid Renewable Fuel",
+      Energy.Source.1 == "DFO" ~ "Petroleum Product",
+      Energy.Source.1 == "LFG" ~ "Gaseous Renewable Fuel",
+      Energy.Source.1 == "MWH" ~ "Energy Storage",
+      Energy.Source.1 == "NG" ~ "Natural Gas",
+      Energy.Source.1 == "NUC" ~ "Nuclear",
+      Energy.Source.1 == "OBG" ~ "Gaseous Renewable Fuel",
+      Energy.Source.1 == "SUN" ~ "Solar",
+      Energy.Source.1 == "WAT" ~ "Hydroelectric",
+      Energy.Source.1 == "WDS" ~ "Solid Renewable Fuel",
+      Energy.Source.1 == "WH" ~ "Waste Heat",
+      Energy.Source.1 == "WND" ~ "Wind",
+      TRUE ~ "Unknown"
+  ))
 
 censusData2020 = censusData %>%
   filter(Year==2020)

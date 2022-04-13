@@ -25,22 +25,57 @@ ggplot(censusData[censusData$Year==2020,],
   scale_x_continuous(labels=comma) + 
   labs(x="Median Household Income", y="NC Counties")
 
+min(censusData$MedianHouseholdIncome)
+max(censusData$MedianHouseholdIncome)
+
 ```
 
 
 
 ```{r, censusMapping, fig.height=10, fig.width=14}
 
-generators = st_read("../Data/Processed/generators.geojson")
+generators = st_read("../Data/Processed/generatorsFuelType.geojson")
 
 # TODO: color different variables manually
-# TODO: make bigger by capacity
+# TODO:y
+
+      # Energy.Source.1 == "AB" ~ "Solid Renewable Fuel",
+      # Energy.Source.1 == "BIT" ~ "Coal",
+      # Energy.Source.1 == "BLQ" ~ "Liquid Renewable Fuel",
+      # Energy.Source.1 == "DFO" ~ "Petroleum Product",
+      # Energy.Source.1 == "LFG" ~ "Gaseous Renewable Fuel",
+      # Energy.Source.1 == "MWH" ~ "Energy Storage",
+      # Energy.Source.1 == "NG" ~ "Natural Gas",
+      # Energy.Source.1 == "NUC" ~ "Nuclear",
+      # Energy.Source.1 == "OBG" ~ "Gaseous Renewable Fuel",
+      # Energy.Source.1 == "SUN" ~ "Solar",
+      # Energy.Source.1 == "WAT" ~ "Hydroelectric",
+      # Energy.Source.1 == "WDS" ~ "Solid Renewable Fuel",
+      # Energy.Source.1 == "WH" ~ "Waste Heat",
+      # Energy.Source.1 == "WND" ~ "Wind",
+      # TRUE ~ "Unknown"
 
 ggplot() + 
   geom_sf(aes(fill=MedianHouseholdIncome), data=censusData) + 
-  geom_sf(aes(color=Technology), alpha=0.8, size=2, data=generators) + 
+  geom_sf(aes(color=FuelType), alpha=0.6, size=3, data=generators) + 
   scale_y_continuous(labels=comma) + 
   scale_fill_gradient(labels=comma) + 
+  scale_color_manual(values=c(
+    "Coal" = "#9c0310",
+    "Petroleum Product" = "#e00b8b",
+    "Natural Gas" = "#d49a08",
+    "Gaseous Renewable Fuel" = "#edc600",
+    "Energy Storage" = "#8f8f8f",
+    "Liquid Renewable Fuel" = "#aed100",
+    "Nuclear" = "#870ee3", 
+    "Gaseous Renewable Fuel" = "#778a3f",
+    "Hydroelectric" = "#147aff",
+    "Solid Renewable Fuel" = "#465e00",
+    "Waste Heat" = "#46998d",
+    "Solar" = "#00ff7b",
+    "Wind" = "#80a6ff"
+    )
+  ) + 
   labs(color="Generator Type", fill="Median Household Income") + 
   theme_void() 
 
