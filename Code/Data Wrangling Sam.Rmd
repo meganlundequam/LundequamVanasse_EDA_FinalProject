@@ -1,0 +1,89 @@
+---
+title: "Data Wrangling"
+author: "Megan Lundequam, Same Vanasse and Casey Slaught"
+date: "3/30/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(plyr)
+library(sf)
+library(tidycensus)
+library(tidyr)
+library(tidyverse)
+options(tigris_use_cache = TRUE)
+library(scales)
+library(sf)
+library(dplyr)
+library(lubridate)
+
+theme_set(theme_classic())
+```
+
+```{r}
+## Census Data
+generatorsCensus2020 = st_read("../Data/Processed/generatorsCensus2020.geojson")
+generatorsCensusNoGeometry = st_drop_geometry(generatorsCensus2020)
+
+class(generatorsCensus2020)
+class(generatorsCensusNoGeometry)
+
+```
+
+
+```{r}
+## Generator Info
+census.data <- read.csv("../Data/Processed/generatorsCensusCategoriesComplete.csv", stringsAsFactors = TRUE)
+
+## Getting nameplate capacity
+generator.data <- read.csv("../Data/2020EnergyData/3_1_Generator_Y2020.csv", stringsAsFactors = TRUE)
+
+generator.data.agg <- 
+  generator.data %>%
+  subset(generator.data$State == "NC") %>%
+  subset(select = c(County, Plant.Code, Prime.Mover, Nameplate.Capacity..MW.))
+
+gen.data.2020 <- cbind(census.data, generator.data.agg$Nameplate.Capacity..MW.) %>% 
+  rename(c("Nameplate.Capacity" = `generator.data.agg$Nameplate.Capacity..MW.`)) %>% 
+  mutate(Nameplate.Capacity1 = as.numeric(as.character(Nameplate.Capacity)))
+
+```
+
+
+```{r}
+## Aggregating Data
+aggregated.gen.data <- 
+  gen.data.2020 %>%
+  group_by(County, Renewable.v.FossilFuel) %>%
+  dplyr::summarise(energy.gen = sum(Nameplate.Capacity1))
+
+processed.gen.census <- 
+  full_join(aggregated.gen.data, census.data) %>%
+  subset(select=c(County, Renewable.v.FossilFuel, energy.gen, MedianHouseholdIncome)) %>%
+  distinct(.keep_all = TRUE)
+
+total.gen.census <- 
+  processed.gen.census %>%
+  group_by(County) %>%
+  dplyr::summarise(total.gen = sum(energy.gen))
+
+final.gen.census <-
+  full_join(processed.gen.census, total.gen.census)
+```
+
+```{r}
+## Regression Analysis
+energy.reg <- lm(data = final.gen.census, total.gen ~ MedianHouseholdIncome)
+summary(energy.reg)
+
+# Correlation
+cor.test(final.gen.census$total.gen, final.gen.census$MedianHouseholdIncome)
+
+```
+
+
+
+
+
+
