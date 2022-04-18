@@ -6,8 +6,8 @@ output:
     number_sections: yes
 geometry: margin=2.54cm
 title: "Insert title of project here"
-subtitle: "Web address for GitHub repository"
-author: "Name"
+subtitle: "https://github.com/meganlundequam/LundequamVanasse_EDA_FinalProject"
+author: "Megan Lundequam, Casey Slaught, Sam Vannase"
 fontsize: 12pt
 mainfont: Times New Roman
 

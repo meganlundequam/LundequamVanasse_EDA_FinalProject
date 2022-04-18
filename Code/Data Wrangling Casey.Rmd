@@ -22,8 +22,16 @@ allCensusVariables = load_variables(2020, "acs5", cache=TRUE)
 # View(allCensusVariables)
 
 censusVariables = c(
-  "Median Family Income" = "B19113_001",
-  "Total Population" = "B25026_001" # in occupied housing units
+  "MedianFamilyIncome" = "B19113_001",
+  "TotalPopulation" = "B25026_001", # in occupied housing units
+  "BlackPopulation" = "C02003_004", # one race
+  "WhitePopulation" = "C02003_003", # one race
+  "NativeAmerican Population" = "C02003_005", # one race
+  "NoSchooling" = "B15003_002",
+  "Mobility" = "B07409_001",
+  "Mobility2" = "B07412_001",
+  "RaceAllocation" = "B99021_001",
+  "DetailedRace" = "C02003_001"
 )
 ```
 
@@ -32,46 +40,52 @@ censusVariables = c(
 # American Community Survey (ACS) has data on income, decennial does not
 # ACS has yearly data, decennial is every 10 years
 
-getCensusIncomeData = function(geography="county", state="NC") {
+getCensusIncomeData = function(variableName, geography="county", state="NC", year=2020) {
   # gets ACS census data from 2010 to 2020
   
+  variable = censusVariables[variableName]
   # TODO: add more census variables
   
-  dataList = list()
-  for (i in 1:11) {
-    year = 2009 + i
-    data = get_acs(state=state,
-                   geography=geography,
-                   year=year,
-                   geometry = TRUE,
-                   variables=censusVariables["Median Family Income"]) %>%
-      select(GEOID, NAME, estimate, geometry) %>%
-      mutate(Year=year) %>%
-      plyr::rename(., c(estimate="MedianHouseholdIncome"))
-    
-    if (geography == "state") {
-      data = data %>% mutate(State=state.abb[match(NAME, state.name)])
-    } else if (geography == "county") {
-      data = data %>%
-        separate(NAME, c("County", "State"), sep=", ", remove=F) %>%
-        separate(County, c("CountyShort", NA), sep=" County", remove=F)
-    }
-    
-    dataList[[i]] = data # add it to your list
-  }
+  data = get_acs(state=state,
+                 geography=geography,
+                 year=year,
+                 geometry=TRUE,
+                 variables=variable) %>%
+    select(GEOID, NAME, estimate, geometry) %>%
+    mutate(Year=year) %>%
+    plyr::rename(., c(estimate=variableName))
   
-  censusData = do.call(rbind, dataList)
-  censusData 
+  if (geography == "state") {
+    data = data %>% mutate(State=state.abb[match(NAME, state.name)])
+  } else if (geography == "county") {
+    data = data %>%
+      separate(NAME, c("County", "State"), sep=", ", remove=F) %>%
+      separate(County, c("CountyShort", NA), sep=" County", remove=F)
+  }
+   
+  data = data[order(data$NAME),]
+  data
 }
 
 
-geography = "county"
-state = "NC"
-censusData = getCensusIncomeData(geography=geography, state=state)
-# View(censusData)
+income = getCensusIncomeData("MedianFamilyIncome")
+population = getCensusIncomeData("TotalPopulation") %>% select(TotalPopulation)
+noSchooling = getCensusIncomeData("NoSchooling") %>% select(NoSchooling)
+mobility1 = getCensusIncomeData("Mobility") %>% select(Mobility)
+mobility2 = getCensusIncomeData("Mobility2") %>% select(Mobility2)
+raceAllocation = getCensusIncomeData("RaceAllocation") %>% select(RaceAllocation)
+detailedRace = getCensusIncomeData("DetailedRace") %>% select(DetailedRace)
 
-filePath = paste("../Data/Census/", state, "_", geography, ".geojson", sep="")
-st_write(censusData, filePath)
+allData = cbind(income, population, noSchooling, mobility1, mobility2, raceAllocation, detailedRace)
+
+allData = allData %>%
+  select(-num_range(prefix = "geometry.", range=1:6))
+
+
+# convert to regular object then back to sf?
+
+filePath = "../Data/Processed/NC_county_complete.geojson"
+st_write(allData, filePath)
 
 ```
 
