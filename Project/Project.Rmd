@@ -7,7 +7,7 @@ output:
 geometry: margin=2.54cm
 title: "Energy Distribution in North Carolina"
 subtitle: "https://github.com/meganlundequam/LundequamVanasse_EDA_FinalProject"
-author: "Megan Lundequam, Casey Slaught, Sam Vannase"
+author: "Megan Lundequam, Casey Slaught, Sam Vanasse"
 fontsize: 12pt
 mainfont: Times New Roman
 
