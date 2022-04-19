@@ -26,7 +26,7 @@ theme_set(theme_classic())
 ```{r}
 ## Census Data
 allCensusVariables = load_variables(2020, "acs5", cache=TRUE)
-#View(allCensusVariables)
+View(allCensusVariables)
 
 ##Names are not descriptive, but did not want to manipulate code too much so I simply applied new code numbers to the old names and will reclassify them later.
 

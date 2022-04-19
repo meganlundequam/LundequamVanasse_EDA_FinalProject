@@ -29,6 +29,14 @@ RMarkdown Cheat Sheet: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkd
 library(scales)
 library(sf)
 library(tidyverse)
+library(plyr)
+library(tidycensus)
+library(tidyr)
+options(tigris_use_cache = TRUE)
+library(dplyr)
+library(lubridate)
+library(corrplot)
+
 
 # Load your packages
 
@@ -189,11 +197,11 @@ corrplot.mixed(Corr.data, upper = "ellipse")
 total.regression.variables <- 
   lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
-       log(Per.MinorityMobility))
+       Per.MinorityMobility)
 fossil.reg.variables <- 
   lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
-       log(Per.MinorityMobility))
+       Per.MinorityMobility)
 renewable.reg.variables <- 
   lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
