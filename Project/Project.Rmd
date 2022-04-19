@@ -102,6 +102,8 @@ ggplot() +
 \newpage
 
 # Analysis
+
+
 ```{r include=FALSE}
 ## Adding new census info and cleaning it
 additional.census <- read.csv("../Data/Processed/UpdatedCensus.csv", stringsAsFactors = TRUE) 
@@ -158,7 +160,7 @@ total.gen.census <-
   group_by(County) %>%
   dplyr::summarise(total.gen = sum(energy.type.gen))
 
-##Separating into 3 different data sets to analyse different impacts
+##Separating into 3 different data sets to analyze different impacts
 Final.gen.census <-
   full_join(processed.gen.census, total.gen.census) 
 
@@ -170,6 +172,7 @@ Fossil.county <-
   Final.gen.census %>%
   subset(Renewable.v.FossilFuel=='Fossil Fuel') 
 ```
+
 
 ```{r echo=FALSE}
 ## Correlation Plot
@@ -228,6 +231,34 @@ plot(renewable.reg)
 
 ```
 
+
+For this analysis we used the generation site's nameplate capacity as the 
+independent variable demonstrating the size, and assumed impact, to a community. 
+We aggregated these values into three broad categories: fossil fuel, renewable, 
+and total energy generation in each county. We then combined this data with 
+demographic data from the US Census Bureau for the year 2020. These dependent 
+variables include the county's median income, the percent of the county's total 
+population that have received a college or associates degree, and the mobility
+of the population based on race and poverty status. 
+
+Given that both total energy generation within a county and their median income
+are positively skewed, we used log transformation on those variables. The 
+remaining dependent variables were not log transformed as we already converted 
+them to percentages of each county's total population. 
+
+To help narrow the focus of our analysis we utilized Akaike's Information 
+Criterion (AIC) to select our variables for each regression. This exploratory 
+analysis demonstrated that, given our data limitations, focusing on renewable
+data and using our minority mobility and median income variables will offer the 
+best analysis (AIC=21.31).
+
+The regression analysis (Adj. R-squared = 0.1638) demonstrates with a 1% 
+increase in a county's renewable energy infrastructure, the county's median 
+income decreases by 1.51% (p-value = 0.0329) and the ratio of population that 
+is a minority increases by 1.97% (p-value = 0.0117). This is in line with what 
+we hypothesized, because although renewable energy is often thought of as a 
+luxury resource, the infrastructure still undergoes NIMBY criticism by many 
+wealthier individuals. 
 
 ## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
 
