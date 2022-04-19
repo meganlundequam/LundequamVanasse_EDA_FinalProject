@@ -17,6 +17,8 @@ library(scales)
 library(sf)
 library(dplyr)
 library(lubridate)
+library(corrplot)
+
 
 theme_set(theme_classic())
 ```
@@ -114,6 +116,16 @@ Fossil.county <-
 ```
 
 ```{r}
+## Correlation Plot
+Corr.data <- 
+  Renewable.county %>%
+  select(MedianHouseholdIncome:total.gen) %>%
+  na.omit() %>%
+  subset(select=-c(County))
+
+corrplot(Corr.data, method = "ellipse")
+corrplot.mixed(Corr.data, upper = "ellipse")
+
 ## All variable Regression
 regression.variables <- 
   lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
@@ -128,19 +140,19 @@ total.energy.reg <-
   lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
-
 summary(total.energy.reg)
 
-fossil.reg <- lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+
+fossil.reg <- 
+  lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
-
 summary(fossil.reg)
 
-renewable.reg <- lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+renewable.reg <- 
+  lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
-
 summary(renewable.reg)
 
 
@@ -150,114 +162,6 @@ plot(fossil.reg)
 
 
 ```
-
-
-*****************
-```{r, fig.height = 3, fig.width = 4}
-par(mfrow = c(2,2), mar=c(4,4,4,4))
-plot(irradiance.regression)
-par(mfrow = c(1,1))
-```
-
-The option best suited for communicating findings is to plot the explanatory and response variables as a scatterplot. 
-
-```{r, fig.height = 3, fig.width = 4}
-# Plot the regression
-irradiancebydepth <- 
-  ggplot(PeterPaul.chem.nutrients, aes(x = depth, y = irradianceWater)) +
-  ylim(0, 2000) +
-  geom_point() 
-print(irradiancebydepth) 
-```
-
-Given the distribution of irradiance values, we don't have a linear relationship between x and y in this case. Let's try log-transforming the irradiance values. Note we also removing the observations that seems to ba an outlier.
-
-```{r, fig.height = 3, fig.width = 4}
-PeterPaul.chem.nutrients <- filter(PeterPaul.chem.nutrients, 
-                                   irradianceWater != 0 & irradianceWater < 5000)
-irradiance.regression2 <- lm(data = PeterPaul.chem.nutrients, log(irradianceWater) ~ depth)
-summary(irradiance.regression2)
-
-par(mfrow = c(2,2), mar=c(4,4,4,4))
-plot(irradiance.regression2)
-par(mfrow = c(1,1))
-
-# Add a line and standard error for the linear regression
-irradiancebydepth2 <- 
-  ggplot(PeterPaul.chem.nutrients, aes(x = depth, y = irradianceWater)) +
-  geom_smooth(method = "lm") +
-  scale_y_log10() +
-  geom_point() 
-print(irradiancebydepth2) 
-
-# SE - confidence interval around smooth can also be removed
-irradiancebydepth2 <- 
-    ggplot(PeterPaul.chem.nutrients, aes(x = depth, y = irradianceWater)) +
-    geom_point() +
-    scale_y_log10() +  #log transformed values for irradianceWater
-    geom_smooth(method = 'lm', se = FALSE, color = "black")
-print(irradiancebydepth2)
-
-# Make the graph attractive
-
-```
-
-## Multiple Linear Regression
-It is possible, and often useful, to consider multiple continuous explanatory variables at a time in a linear regression. For example, total phosphorus concentration in Paul Lake (the unfertilized lake) could be dependent on depth and dissolved oxygen concentration: 
-
-``` {r, fig.height = 3, fig.width = 4}
-TPregression <- lm(data = subset(PeterPaul.chem.nutrients, lakename == "Paul Lake"), 
-                   tp_ug ~ depth + dissolvedOxygen)
-summary(TPregression)
-
-TPplot <- ggplot(subset(PeterPaul.chem.nutrients, lakename == "Paul Lake"), 
-                 aes(x = dissolvedOxygen, y = tp_ug, color = depth)) +
-  geom_point() +
-  xlim(0, 20)
-print(TPplot)
-
-par(mfrow = c(2,2), mar=c(4,4,4,4))
-plot(TPregression)
-par(mfrow = c(1,1))
-
-```
-
-## Correlation Plots
-We can also make exploratory plots of several continuous data points to determine possible relationships, as well as covariance among explanatory variables. 
-
-```{r, fig.height = 3, fig.width = 4}
-#install.packages("corrplot")
-library(corrplot)
-PeterPaulnutrients <- 
-  PeterPaul.chem.nutrients %>%
-  select(tn_ug:po4) %>%
-  na.omit()
-PeterPaulCorr <- cor(PeterPaulnutrients)
-corrplot(PeterPaulCorr, method = "ellipse")
-corrplot.mixed(PeterPaulCorr, upper = "ellipse")
-```
-
-## AIC to select variables
-
-However, it is possible to over-parameterize a linear model. Adding additional explanatory variables takes away degrees of freedom, and if explanatory variables co-vary the interpretation can become overly complicated. Remember, an ideal statistical model balances simplicity and explanatory power! To help with this tradeoff, we can use the **Akaike's Information Criterion (AIC)** to compute a stepwise regression that either adds explanatory variables from the bottom up or removes explanatory variables from a full set of suggested options. The smaller the AIC value, the better. 
-
-Let's say we want to know which explanatory variables will allow us to best predict total phosphorus concentrations. Potential explanatory variables from the dataset could include depth, dissolved oxygen, temperature, PAR, total N concentration, and phosphate concentration.
-
-```{r}
-Paul.naomit <- PeterPaul.chem.nutrients %>%
-  filter(lakename == "Paul Lake") %>%
-  na.omit()
-
-TPAIC <- lm(data = Paul.naomit, tp_ug ~ depth + dissolvedOxygen + 
-              temperature_C + tn_ug + po4)
-
-#Choose a model by AIC in a Stepwise Algorithm
-step(TPAIC)
-TPmodel <- lm(data = Paul.naomit, tp_ug ~ dissolvedOxygen + temperature_C + tn_ug)
-summary(TPmodel)
-
-```
-
 
 
 

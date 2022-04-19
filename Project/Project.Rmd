@@ -7,7 +7,7 @@ output:
 geometry: margin=2.54cm
 title: "Energy Distribution in North Carolina"
 subtitle: "https://github.com/meganlundequam/LundequamVanasse_EDA_FinalProject"
-author: "Megan Lundequam, Casey Slaught, Sam Vannase"
+author: "Megan Lundequam, Casey Slaught, Sam Vanasse"
 fontsize: 12pt
 mainfont: Times New Roman
 
@@ -104,6 +104,161 @@ ggplot() +
 # Analysis
 
 
+```{r include=FALSE}
+## Adding new census info and cleaning it
+additional.census <- read.csv("../Data/Processed/UpdatedCensus.csv", stringsAsFactors = TRUE) 
+additional.census <- 
+  additional.census %>%
+  subset(select=c(County, TotalPopulation, NoSchooling, Mobility, RaceAllocation, DetailedRace)) %>%
+  rename(c("PovertyMobility" = Mobility, "WhitePopMobility" = RaceAllocation, "CollegeDeg" = DetailedRace)) %>%
+  mutate(Per.PovertyMobility = (PovertyMobility/TotalPopulation),
+         MinorityMobility = (TotalPopulation - WhitePopMobility),
+         Per.MinorityMobility = (MinorityMobility/TotalPopulation),
+         Per.NoSchooling = (NoSchooling/TotalPopulation),
+         Per.CollegeDeg = (CollegeDeg/TotalPopulation)
+         )
+
+## Generator Info
+census.data <- read.csv("../Data/Processed/generatorsCensusCategoriesComplete.csv", stringsAsFactors = TRUE)
+census.data <- 
+  full_join(census.data, additional.census) %>%
+  drop_na(Energy.Source.1)
+
+## Getting nameplate capacity
+generator.data <- read.csv("../Data/2020EnergyData/3_1_Generator_Y2020.csv", stringsAsFactors = TRUE)
+
+## Selecting variables of interest
+generator.data <- 
+  generator.data %>%
+  subset(generator.data$State == "NC") %>%
+  subset(select = c(County, Plant.Code, Prime.Mover, Nameplate.Capacity..MW.))
+
+## Adding income to the full generator data by county
+full.data <- cbind(census.data, generator.data$Nameplate.Capacity..MW.) %>% 
+  rename(c("Nameplate.Capacity" = `generator.data$Nameplate.Capacity..MW.`)) %>% 
+  mutate(Nameplate.Capacity1 = as.numeric(as.character(Nameplate.Capacity)))
+
+```
+
+
+```{r include=FALSE}
+## Aggregating the generator data so that it groups all of it by county and by generation type
+aggregated.gen.data <- 
+  full.data %>%
+  group_by(County, Renewable.v.FossilFuel) %>%
+  dplyr::summarise(energy.type.gen = sum(Nameplate.Capacity1))
+
+## Joining it to the census data to have capacity and income in same file & selecting specific variables
+processed.gen.census <- 
+  full_join(aggregated.gen.data, census.data) %>%
+  subset(select=c(County, Renewable.v.FossilFuel, energy.type.gen, MedianHouseholdIncome, TotalPopulation, Per.CollegeDeg, Per.PovertyMobility, Per.MinorityMobility, Per.NoSchooling)) %>%
+  distinct(.keep_all = TRUE)
+
+## Creating a total generation variable, Removing fossil vs renewable distinction
+total.gen.census <- 
+  processed.gen.census %>%
+  group_by(County) %>%
+  dplyr::summarise(total.gen = sum(energy.type.gen))
+
+##Separating into 3 different data sets to analyze different impacts
+Final.gen.census <-
+  full_join(processed.gen.census, total.gen.census) 
+
+Renewable.county <- 
+  Final.gen.census %>%
+  subset(Renewable.v.FossilFuel=='Renewable Fuel') 
+
+Fossil.county <- 
+  Final.gen.census %>%
+  subset(Renewable.v.FossilFuel=='Fossil Fuel') 
+```
+
+
+```{r echo=FALSE}
+## Correlation Plot
+Corr.data <- 
+  Renewable.county %>%
+  select(MedianHouseholdIncome:total.gen) %>%
+  na.omit() %>%
+  subset(select=-c(County))
+
+corrplot(Corr.data, method = "ellipse")
+corrplot.mixed(Corr.data, upper = "ellipse")
+
+## All variable Regression
+total.regression.variables <- 
+  lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       log(Per.MinorityMobility))
+fossil.reg.variables <- 
+  lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       log(Per.MinorityMobility))
+renewable.reg.variables <- 
+  lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       Per.MinorityMobility)
+
+## AIC
+step(regression.variables)
+step(fossil.reg.variables)
+step(renewable.reg.variables)
+
+## Regression Analysis
+renewable.reg <- 
+  lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+        Per.MinorityMobility)
+summary(renewable.reg)
+
+
+total.energy.reg <- 
+  lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       Per.MinorityMobility)
+summary(total.energy.reg)
+
+fossil.reg <- 
+  lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       Per.MinorityMobility)
+summary(fossil.reg)
+
+
+
+
+plot(renewable.reg)
+
+
+```
+
+
+For this analysis we used the generation site's nameplate capacity as the 
+independent variable demonstrating the size, and assumed impact, to a community. 
+We aggregated these values into three broad categories: fossil fuel, renewable, 
+and total energy generation in each county. We then combined this data with 
+demographic data from the US Census Bureau for the year 2020. These dependent 
+variables include the county's median income, the percent of the county's total 
+population that have received a college or associates degree, and the mobility
+of the population based on race and poverty status. 
+
+Given that both total energy generation within a county and their median income
+are positively skewed, we used log transformation on those variables. The 
+remaining dependent variables were not log transformed as we already converted 
+them to percentages of each county's total population. 
+
+To help narrow the focus of our analysis we utilized Akaike's Information 
+Criterion (AIC) to select our variables for each regression. This exploratory 
+analysis demonstrated that, given our data limitations, focusing on renewable
+data and using our minority mobility and median income variables will offer the 
+best analysis (AIC=21.31).
+
+The regression analysis (Adj. R-squared = 0.1638) demonstrates with a 1% 
+increase in a county's renewable energy infrastructure, the county's median 
+income decreases by 1.51% (p-value = 0.0329) and the ratio of population that 
+is a minority increases by 1.97% (p-value = 0.0117). This is in line with what 
+we hypothesized, because although renewable energy is often thought of as a 
+luxury resource, the infrastructure still undergoes NIMBY criticism by many 
+wealthier individuals. 
 
 ## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
 
