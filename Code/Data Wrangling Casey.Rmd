@@ -28,10 +28,10 @@ censusVariables = c(
   "WhitePopulation" = "C02003_003", # one race
   "NativeAmerican Population" = "C02003_005", # one race
   "NoSchooling" = "B15003_002",
-  "Mobility" = "B07409_001",
-  "Mobility2" = "B07412_001",
-  "RaceAllocation" = "B99021_001",
-  "DetailedRace" = "C02003_001"
+  "Mobility" = "B07012_002",
+  "Mobility2" = "B07004B_001",
+  "RaceAllocation" = "B07404A_001",
+  "DetailedRace" = "B23006_016"
 )
 ```
 
@@ -84,7 +84,8 @@ allData = allData %>%
 
 # convert to regular object then back to sf?
 
-filePath = "../Data/Processed/NC_county_complete.geojson"
+## Sam ~ I changed the name to NC_county_comoplete2 so I could make as few changes as possible. I also kept the names of the variables the same for the same reason, though the values are updated. I have correct names in my own code.
+filePath = "../Data/Processed/NC_county_complete3.geojson"
 st_write(allData, filePath)
 
 ```

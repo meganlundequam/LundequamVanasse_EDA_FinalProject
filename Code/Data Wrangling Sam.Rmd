@@ -23,91 +23,131 @@ theme_set(theme_classic())
 
 ```{r}
 ## Census Data
-generatorsCensus2020 = st_read("../Data/Processed/generatorsCensus2020.geojson")
-generatorsCensusNoGeometry = st_drop_geometry(generatorsCensus2020)
+allCensusVariables = load_variables(2020, "acs5", cache=TRUE)
+#View(allCensusVariables)
 
-class(generatorsCensus2020)
-class(generatorsCensusNoGeometry)
+##Names are not descriptive, but did not want to manipulate code too much so I simply applied new code numbers to the old names and will reclassify them later.
 
+#'Mobility' ~ B07012_002 ~ Below 100 percent of the poverty level --GEOGRAPHICAL MOBILITY IN THE PAST YEAR BY POVERTY STATUS IN THE PAST 12 MONTHS FOR                                   CURRENT RESIDENCE IN THE UNITED STATES
+#'Mobility2' ~ B07004B_001 GEOGRAPHICAL MOBILITY IN THE PAST YEAR (BLACK OR AFRICAN AMERICAN ALONE) FOR CURRENT RESIDENCE IN THE UNITED STATES
+#'RaceAllocation' ~ B07404A_001 GEOGRAPHICAL MOBILITY IN THE PAST YEAR (WHITE ALONE) FOR RESIDENCE 1 YEAR AGO IN THE UNITED STATES
+#'DetailedRace' ~ B23006_016 Some college or associate's degree --EDUCATIONAL ATTAINMENT BY EMPLOYMENT STATUS FOR THE POPULATION 25 TO 64 YEARS
+
+
+
+
+UpdatedCensus = st_read("../Data/Processed/NC_county_complete3.geojson")
+UpdatedCensusNoGeometry = st_drop_geometry(UpdatedCensus)
+
+write.csv(UpdatedCensusNoGeometry, row.names = FALSE, 
+          file = "../Data/Processed/UpdatedCensus.csv")
 ```
 
 
 ```{r}
+## Adding new census info and cleaning it
+additional.census <- read.csv("../Data/Processed/UpdatedCensus.csv", stringsAsFactors = TRUE) 
+additional.census <- 
+  additional.census %>%
+  subset(select=c(County, TotalPopulation, NoSchooling, Mobility, RaceAllocation, DetailedRace)) %>%
+  rename(c("PovertyMobility" = Mobility, "WhitePopMobility" = RaceAllocation, "CollegeDeg" = DetailedRace)) %>%
+  mutate(Per.PovertyMobility = (PovertyMobility/TotalPopulation),
+         MinorityMobility = (TotalPopulation - WhitePopMobility),
+         Per.MinorityMobility = (MinorityMobility/TotalPopulation),
+         Per.NoSchooling = (NoSchooling/TotalPopulation),
+         Per.CollegeDeg = (CollegeDeg/TotalPopulation)
+         )
+
 ## Generator Info
 census.data <- read.csv("../Data/Processed/generatorsCensusCategoriesComplete.csv", stringsAsFactors = TRUE)
+census.data <- 
+  full_join(census.data, additional.census) %>%
+  drop_na(Energy.Source.1)
 
 ## Getting nameplate capacity
 generator.data <- read.csv("../Data/2020EnergyData/3_1_Generator_Y2020.csv", stringsAsFactors = TRUE)
 
-generator.data.agg <- 
+## Selecting variables of interest
+generator.data <- 
   generator.data %>%
   subset(generator.data$State == "NC") %>%
   subset(select = c(County, Plant.Code, Prime.Mover, Nameplate.Capacity..MW.))
 
-gen.data.2020 <- cbind(census.data, generator.data.agg$Nameplate.Capacity..MW.) %>% 
-  rename(c("Nameplate.Capacity" = `generator.data.agg$Nameplate.Capacity..MW.`)) %>% 
+## Adding income to the full generator data by county
+full.data <- cbind(census.data, generator.data$Nameplate.Capacity..MW.) %>% 
+  rename(c("Nameplate.Capacity" = `generator.data$Nameplate.Capacity..MW.`)) %>% 
   mutate(Nameplate.Capacity1 = as.numeric(as.character(Nameplate.Capacity)))
 
 ```
 
 
 ```{r}
-## Aggregating Data
+## Aggregating the generator data so that it groups all of it by county and by generation type
 aggregated.gen.data <- 
-  gen.data.2020 %>%
+  full.data %>%
   group_by(County, Renewable.v.FossilFuel) %>%
-  dplyr::summarise(energy.gen = sum(Nameplate.Capacity1))
+  dplyr::summarise(energy.type.gen = sum(Nameplate.Capacity1))
 
+## Joining it to the census data to have capacity and income in same file & selecting specific variables
 processed.gen.census <- 
   full_join(aggregated.gen.data, census.data) %>%
-  subset(select=c(County, Renewable.v.FossilFuel, energy.gen, MedianHouseholdIncome)) %>%
+  subset(select=c(County, Renewable.v.FossilFuel, energy.type.gen, MedianHouseholdIncome, TotalPopulation, Per.CollegeDeg, Per.PovertyMobility, Per.MinorityMobility, Per.NoSchooling)) %>%
   distinct(.keep_all = TRUE)
 
+## Creating a total generation variable, Removing fossil vs renewable distinction
 total.gen.census <- 
   processed.gen.census %>%
   group_by(County) %>%
-  dplyr::summarise(total.gen = sum(energy.gen))
+  dplyr::summarise(total.gen = sum(energy.type.gen))
 
-final.gen.census <-
-  full_join(processed.gen.census, total.gen.census)
+##Separating into 3 different data sets to analyse different impacts
+Final.gen.census <-
+  full_join(processed.gen.census, total.gen.census) 
 
-renewable.county <- 
-  final.gen.census %>%
+Renewable.county <- 
+  Final.gen.census %>%
   subset(Renewable.v.FossilFuel=='Renewable Fuel') 
 
-fossil.county <- 
-  final.gen.census %>%
+Fossil.county <- 
+  Final.gen.census %>%
   subset(Renewable.v.FossilFuel=='Fossil Fuel') 
 ```
 
 ```{r}
+## All variable Regression
+regression.variables <- 
+  lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       Per.MinorityMobility)
+
+## AIC
+step(regression.variables)
+
 ## Regression Analysis
-energy.reg <- lm(data = final.gen.census, total.gen ~ MedianHouseholdIncome)
-summary(energy.reg)
+total.energy.reg <- 
+  lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       Per.MinorityMobility)
 
-#energy.reg2 <- lm(data = final.gen.census, log(total.gen) ~ MedianHouseholdIncome)
-#summary(energy.reg2)
+summary(total.energy.reg)
 
-energy.reg3 <- lm(data = final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome))
-summary(energy.reg3)
+fossil.reg <- lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       Per.MinorityMobility)
 
-energy.reg4 <- lm(data = final.gen.census, total.gen ~ log(MedianHouseholdIncome))
-summary(energy.reg4)
-
-fossil.reg <- lm(data = fossil.county, log(energy.gen) ~ log(MedianHouseholdIncome))
 summary(fossil.reg)
 
-renewable.reg <- lm(data = renewable.county, log(energy.gen) ~ log(MedianHouseholdIncome))
+renewable.reg <- lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       Per.MinorityMobility)
+
 summary(renewable.reg)
 
-#renewable.reg <- lm(data = renewable.county, log(MedianHouseholdIncome) ~ energy.gen)
-#summary(renewable.reg)
-
-
-# Correlation
-cor.test(final.gen.census$total.gen, final.gen.census$MedianHouseholdIncome)
 
 plot(renewable.reg)
+plot(total.energy.reg)
+plot(fossil.reg)
+
 
 ```
 
