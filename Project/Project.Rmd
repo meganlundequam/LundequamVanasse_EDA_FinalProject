@@ -1,0 +1,123 @@
+---
+output: 
+  pdf_document:
+    keep_tex: yes
+    fig_caption: yes
+    number_sections: yes
+geometry: margin=2.54cm
+title: "Energy Distribution in North Carolina"
+subtitle: "https://github.com/meganlundequam/LundequamVanasse_EDA_FinalProject"
+author: "Megan Lundequam, Casey Slaught, Sam Vannase"
+fontsize: 12pt
+mainfont: Times New Roman
+
+---
+
+RMarkdown Cheat Sheet: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+
+
+\newpage
+\tableofcontents 
+\newpage
+\listoftables 
+\newpage
+\listoffigures 
+\newpage
+
+```{r setup, include=FALSE}
+# Set your working directory
+library(scales)
+library(sf)
+library(tidyverse)
+
+# Load your packages
+
+# Set your ggplot theme
+theme_set(theme_classic())
+
+# Load your datasets
+censusData = st_read("../Data/Processed/NC_county_complete.geojson")
+```
+
+
+# Rationale and Research Questions
+
+
+
+\newpage
+
+# Dataset Information
+
+
+
+\newpage
+
+# Exploratory Analysis
+
+There is a marked difference in median household income across counties in North Carolina.
+
+```{r, echo=FALSE, message=FALSE, fig.height=9}
+
+ggplot(censusData[censusData$Year==2020,], 
+       aes(x=MedianFamilyIncome, y=reorder(CountyShort, MedianFamilyIncome))) +
+  geom_point() + 
+  scale_x_continuous(labels=comma) + 
+  labs(x="Median Household Income", y="NC Counties") + 
+  theme(text = element_text(size = 8))
+
+```
+
+Energy generators are diverse in type and widespread throughout the state. Yet while solar appears to be the most abundant, it makes up small fraction of total energy generation.
+
+```{r, echo=FALSE, results='hide', fig.height=7, fig.width=10}
+
+generators = st_read("../Data/Processed/generatorsFuelType.geojson")
+
+ggplot() + 
+  geom_sf(aes(fill=MedianFamilyIncome), data=censusData) + 
+  geom_sf(aes(color=FuelType), alpha=0.6, size=3, data=generators) + 
+  scale_y_continuous(labels=comma) + 
+  scale_fill_gradient(labels=comma) + 
+  scale_color_manual(values=c(
+    "Coal" = "#9c0310",
+    "Petroleum Product" = "#e00b8b",
+    "Natural Gas" = "#d49a08",
+    "Gaseous Renewable Fuel" = "#edc600",
+    "Energy Storage" = "#8f8f8f",
+    "Liquid Renewable Fuel" = "#aed100",
+    "Nuclear" = "#870ee3", 
+    "Gaseous Renewable Fuel" = "#778a3f",
+    "Hydroelectric" = "#147aff",
+    "Solid Renewable Fuel" = "#465e00",
+    "Waste Heat" = "#46998d",
+    "Solar" = "#00ff7b",
+    "Wind" = "#80a6ff"
+    )
+  ) + 
+  labs(color="Generator Type", fill="Median Household Income") + 
+  theme_void() 
+
+```
+
+\newpage
+
+# Analysis
+
+
+
+## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
+
+## Question 2: 
+
+
+
+
+\newpage
+
+# Summary and Conclusions
+
+
+\newpage
+
+# References
+<add references here if relevant, otherwise delete this section> 

@@ -5,7 +5,7 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-title: "Insert title of project here"
+title: "Energy Distribution in North Carolina"
 subtitle: "https://github.com/meganlundequam/LundequamVanasse_EDA_FinalProject"
 author: "Megan Lundequam, Casey Slaught, Sam Vannase"
 fontsize: 12pt
