@@ -102,7 +102,7 @@ ggplot() +
 \newpage
 
 # Analysis
-```{r}
+```{r include=FALSE}
 ## Adding new census info and cleaning it
 additional.census <- read.csv("../Data/Processed/UpdatedCensus.csv", stringsAsFactors = TRUE) 
 additional.census <- 
@@ -139,7 +139,7 @@ full.data <- cbind(census.data, generator.data$Nameplate.Capacity..MW.) %>%
 ```
 
 
-```{r}
+```{r include=FALSE}
 ## Aggregating the generator data so that it groups all of it by county and by generation type
 aggregated.gen.data <- 
   full.data %>%
@@ -171,7 +171,7 @@ Fossil.county <-
   subset(Renewable.v.FossilFuel=='Fossil Fuel') 
 ```
 
-```{r}
+```{r echo=FALSE}
 ## Correlation Plot
 Corr.data <- 
   Renewable.county %>%
@@ -183,21 +183,36 @@ corrplot(Corr.data, method = "ellipse")
 corrplot.mixed(Corr.data, upper = "ellipse")
 
 ## All variable Regression
-regression.variables <- 
+total.regression.variables <- 
   lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       log(Per.MinorityMobility))
+fossil.reg.variables <- 
+  lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+       Per.CollegeDeg + Per.PovertyMobility + 
+       log(Per.MinorityMobility))
+renewable.reg.variables <- 
+  lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
 
 ## AIC
 step(regression.variables)
+step(fossil.reg.variables)
+step(renewable.reg.variables)
 
 ## Regression Analysis
+renewable.reg <- 
+  lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+        Per.MinorityMobility)
+summary(renewable.reg)
+
+
 total.energy.reg <- 
   lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
 summary(total.energy.reg)
-
 
 fossil.reg <- 
   lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
@@ -205,16 +220,11 @@ fossil.reg <-
        Per.MinorityMobility)
 summary(fossil.reg)
 
-renewable.reg <- 
-  lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
-       Per.CollegeDeg + Per.PovertyMobility + 
-       Per.MinorityMobility)
-summary(renewable.reg)
+
 
 
 plot(renewable.reg)
-plot(total.energy.reg)
-plot(fossil.reg)
+
 
 ```
 
