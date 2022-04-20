@@ -13,8 +13,6 @@ mainfont: Times New Roman
 
 ---
 
-RMarkdown Cheat Sheet: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
-
 
 \newpage
 \tableofcontents 
@@ -204,9 +202,6 @@ fossil.reg <-
 summary(fossil.reg)
 
 ```
-```{r echo=FALSE}
-plot(renewable.reg)
-```
 
 
 For this analysis we used the generation site's nameplate capacity as the 
@@ -237,7 +232,11 @@ we hypothesized, because although renewable energy is often thought of as a
 luxury resource, the infrastructure still undergoes NIMBY criticism by many 
 wealthier individuals. 
 
+The figures below demonstrate the Residuals vs Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage analysis of the renewable energy regression conveying the fit of the regression analysis. 
 
+```{r echo=FALSE}
+plot(renewable.reg)
+```
 
 \newpage
 
