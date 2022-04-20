@@ -142,6 +142,7 @@ print(Renewable.v.ff.gen)
 Figure 4 provides a visual representation of the aggregated energy production potential of the individual generators, using the nameplate capacity for each generator, again based on fuel type and coded according to renewable versus fossil fuel categorization. This shows that the largest contributor to energy production in North Carolina is natural gas, followed by coal.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
+
 aggregated.gen.data.2 <- read.csv("../Data/Processed/NPCapByFuelType.csv")
 
 ## Plot - nameplate capacity by fuel type
@@ -321,6 +322,7 @@ wealthier individuals.
 
 # Summary and Conclusions
 
+Based on this 
 
 \newpage
 
