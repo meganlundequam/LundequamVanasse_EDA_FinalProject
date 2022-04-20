@@ -44,8 +44,7 @@ getCensusIncomeData = function(variableName, geography="county", state="NC", yea
   # gets ACS census data from 2010 to 2020
   
   variable = censusVariables[variableName]
-  # TODO: add more census variables
-  
+
   data = get_acs(state=state,
                  geography=geography,
                  year=year,
@@ -85,7 +84,7 @@ allData = allData %>%
 # convert to regular object then back to sf?
 
 ## Sam ~ I changed the name to NC_county_comoplete2 so I could make as few changes as possible. I also kept the names of the variables the same for the same reason, though the values are updated. I have correct names in my own code.
-filePath = "../Data/Processed/NC_county_complete3.geojson"
+filePath = "../Data/Processed/NC_county_2020_complete.geojson"
 st_write(allData, filePath)
 
 ```

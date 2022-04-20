@@ -62,12 +62,13 @@ censusData = st_read("../Data/Processed/NC_county_complete.geojson")
 
 # Exploratory Analysis
 
-There is a marked difference in median household income across counties in North Carolina.
+There is a marked difference in median household income across counties in North Carolina. Orange and Wake have values over \$100,000, while Halifax and Robeson fall below \$50,000. 
 
 ```{r, echo=FALSE, message=FALSE, fig.height=9}
 
-ggplot(censusData[censusData$Year==2020,], 
-       aes(x=MedianFamilyIncome, y=reorder(CountyShort, MedianFamilyIncome))) +
+min(censusData$MedianFamilyIncome)
+
+ggplot(censusData, aes(x=MedianFamilyIncome, y=reorder(CountyShort, MedianFamilyIncome))) +
   geom_point() + 
   scale_x_continuous(labels=comma) + 
   labs(x="Median Household Income", y="NC Counties") + 
@@ -75,11 +76,13 @@ ggplot(censusData[censusData$Year==2020,],
 
 ```
 
-Energy generators are diverse in type and widespread throughout the state. Yet while solar appears to be the most abundant, it makes up small fraction of total energy generation.
+Energy generators are diverse in type and widespread throughout the state. Yet while solar appears to be the most abundant, it makes up small fraction of total energy generation. Conversely, there are only 5 nuclear sites, yet it makes up a third of the state's energy production.
 
 ```{r, echo=FALSE, results='hide', fig.height=7, fig.width=10}
 
 generators = st_read("../Data/Processed/generatorsFuelType.geojson")
+
+dim(generators[generators$FuelType=="Nuclear",])
 
 ggplot() + 
   geom_sf(aes(fill=MedianFamilyIncome), data=censusData) + 
@@ -230,8 +233,6 @@ fossil.reg <-
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
 summary(fossil.reg)
-
-
 
 
 plot(renewable.reg)
