@@ -246,8 +246,13 @@ wealthier individuals.
 
 # Summary and Conclusions
 
+## Summary
 
+In summary, we evaluated the current state of energy generation-related environmental injustices by investigating the distribution of energy generators in North Carolina. We found that spatial distributions of energy generators at the county level showed little correlation with county-wide demographics. The only correlation significance was found to be among the spatial distribution of only renewable energy generators and the demographic variables, median income and the percent minority. This is likely due to the fact that there are a greater number of renewable energy sources than fossil fuel sources and correlation cannot be traced at the county level. Additionally, given that such a small number of generators are responsible for providing such a large percentage of the energy needs of the state, a country-wide analysis of energy generators in relation to low income, minority communities might return more significant correlations. Despite this, it is still significant to note that the siting of these renewable energy generators is correlated with low income, colored communities as this suggests that even though there is growing awareness around environmental justice, newer energy sources, albeit renewable, are still being sited near these historically under-served communities. This shows that we could be on a path to reproducing the same distributional impacts of energy generation even though we are transitioning to cleaner energy.
 
+## Conclusion
+
+Energy generators have historically and continue to be disproportionately located next to low income, colored, and under-served communities. We suggest further assessment of the health and social implications of siting clean energy generators near under-served communities. Additionally, a more granular analysis of the communities immediately surrounding specific plants could reveal correlations not captured in this county-wide analysis. Further investigation into these correlations and research around the current siting policies for new energy generators could shed light on opportunities to prevent the exacerbation of environmental injustices as our nation’s energy portfolio evolves to embrace renewables. 
 
 
 \newpage
