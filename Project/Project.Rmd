@@ -78,11 +78,8 @@ We derived demographic data from the US Census Bureau which we obtained through 
 
 # Exploratory Analysis
 
-<<<<<<< HEAD
-There is a marked difference in median household income across counties in North Carolina. Orange and Wake have values over \$100,000, while Halifax and Robeson fall below \$50,000. 
-=======
+
 In our exploratory analysis, we first examined the distribution of income levels across the state. Figure 1 shows there is a marked difference in median household income across counties in North Carolina. 
->>>>>>> abfdec1161a3a4ededef7aba41f46321797b03fb
 
 ```{r, echo=FALSE, message=FALSE, fig.height=9}
 
@@ -96,11 +93,7 @@ ggplot(censusData, aes(x=MedianFamilyIncome, y=reorder(CountyShort, MedianFamily
 
 ```
 
-<<<<<<< HEAD
-Energy generators are diverse in type and widespread throughout the state. Yet while solar appears to be the most abundant, it makes up small fraction of total energy generation. Conversely, there are only 5 nuclear sites, yet it makes up a third of the state's energy production.
-=======
 Figure 2 shows the different types of generators across North Carolina, defined by fuel type. The counties are coded based on the median family income in that county. Note that there does appear to be some overlap between generator location and lower income counties, however a clear pattern is not discernible based on this visual alone. Energy generators are diverse in type and widespread throughout the state. Also of note is that generators powered by solar appear to be the most abundant, despite widespread knowledge that the predominant energy sources in the US are fossil fuels.
->>>>>>> abfdec1161a3a4ededef7aba41f46321797b03fb
 
 ```{r, echo=FALSE, results='hide', fig.height=7, fig.width=10}
 
@@ -170,7 +163,7 @@ print(Renewable.v.ff.cap)
 
 # Analysis
 
-```{r echo=FALSE}
+```{r include=FALSE}
 ## Reading files in 
 All.Energy <- read.csv("../Data/Processed/EnergyDataNCcounties.csv", stringsAsFactors = TRUE)
 FossilFuel.Energy <- read.csv("../Data/Processed/FFEnergyDataNCcounties.csv", stringsAsFactors = TRUE)
@@ -191,7 +184,7 @@ renewable.reg.variables <-
        Per.MinorityMobility)
 
 ## AIC
-step(regression.variables)
+step(total.regression.variables)
 step(fossil.reg.variables)
 step(renewable.reg.variables)
 
@@ -215,9 +208,9 @@ fossil.reg <-
 summary(fossil.reg)
 
 
+```
+```{r echo=FALSE}
 plot(renewable.reg)
-
-
 ```
 
 
@@ -255,7 +248,14 @@ wealthier individuals.
 
 # Summary and Conclusions
 
-Based on this 
+## Summary
+
+In summary, we evaluated the current state of energy generation-related environmental injustices by investigating the distribution of energy generators in North Carolina. We found that spatial distributions of energy generators at the county level showed little correlation with county-wide demographics. The only correlation significance was found to be among the spatial distribution of only renewable energy generators and the demographic variables, median income and the percent minority. This is likely due to the fact that there are a greater number of renewable energy sources than fossil fuel sources and correlation cannot be traced at the county level. Additionally, given that such a small number of generators are responsible for providing such a large percentage of the energy needs of the state, a country-wide analysis of energy generators in relation to low income, minority communities might return more significant correlations. Despite this, it is still significant to note that the siting of these renewable energy generators is correlated with low income, colored communities as this suggests that even though there is growing awareness around environmental justice, newer energy sources, albeit renewable, are still being sited near these historically under-served communities. This shows that we could be on a path to reproducing the same distributional impacts of energy generation even though we are transitioning to cleaner energy.
+
+## Conclusion
+
+Energy generators have historically and continue to be disproportionately located next to low income, colored, and under-served communities. We suggest further assessment of the health and social implications of siting clean energy generators near under-served communities. Additionally, a more granular analysis of the communities immediately surrounding specific plants could reveal correlations not captured in this county-wide analysis. Further investigation into these correlations and research around the current siting policies for new energy generators could shed light on opportunities to prevent the exacerbation of environmental injustices as our nation’s energy portfolio evolves to embrace renewables. 
+
 
 \newpage
 
