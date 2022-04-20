@@ -13,8 +13,6 @@ mainfont: Times New Roman
 
 ---
 
-RMarkdown Cheat Sheet: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
-
 
 \newpage
 \tableofcontents 
@@ -81,7 +79,7 @@ We derived demographic data from the US Census Bureau which we obtained through 
 
 In our exploratory analysis, we first examined the distribution of income levels across the state. Figure 1 shows there is a marked difference in median household income across counties in North Carolina. 
 
-```{r, echo=FALSE, message=FALSE, fig.height=9}
+```{r, echo=FALSE, message=FALSE, fig.height=9, fig.cap="Median Household Income, NC"}
 
 min(censusData$MedianFamilyIncome)
 
@@ -95,11 +93,9 @@ ggplot(censusData, aes(x=MedianFamilyIncome, y=reorder(CountyShort, MedianFamily
 
 Figure 2 shows the different types of generators across North Carolina, defined by fuel type. The counties are coded based on the median family income in that county. Note that there does appear to be some overlap between generator location and lower income counties, however a clear pattern is not discernible based on this visual alone. Energy generators are diverse in type and widespread throughout the state. Also of note is that generators powered by solar appear to be the most abundant, despite widespread knowledge that the predominant energy sources in the US are fossil fuels.
 
-```{r, echo=FALSE, results='hide', fig.height=7, fig.width=10}
+```{r, echo=FALSE, results='hide', fig.height=7, fig.width=10, fig.cap="Energy Generation, NC"}
 
 generators = st_read("../Data/Processed/generatorsFuelType.geojson")
-
-dim(generators[generators$FuelType=="Nuclear",])
 
 ggplot() + 
   geom_sf(aes(fill=MedianFamilyIncome), data=censusData) + 
