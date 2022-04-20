@@ -48,9 +48,9 @@ censusData = st_read("../Data/Processed/NC_county_complete.geojson")
 
 # Rationale and Research Questions
 
-Awareness of environmental injustice has been prevalent in North Carolina for decades. In fact, Warren County, a county just north of Durham, is widely recognized as the birthplace of today’s environmental justice movement(_____). In the late 1980s, the National Association for the Advancement of Colored People and others staged a protest against the state of North Carolina’s decision to site a hazardous waste landfill in the predominantly colored county(_____). Although the protests failed to prevent the siting of the disposal facility, the event shed light on environmental injustice trends with the EPA describing the movement in its 1994 Environmental Equity Draft as “the watershed event that led to the environmental equity movement of the 1980’s” (_____).
+Awareness of environmental injustice has been prevalent in North Carolina for decades. In fact, Warren County, a county just north of Durham, is widely recognized as the birthplace of today’s environmental justice movement (O'Connell, 2016). In the late 1980s, the National Association for the Advancement of Colored People and others staged a protest against the state of North Carolina’s decision to site a hazardous waste landfill in the predominantly colored county (Office of Legacy Management). Although the protests failed to prevent the siting of the disposal facility, the event shed light on environmental injustice trends with the EPA describing the movement in its 1994 Environmental Equity Draft as “the watershed event that led to the environmental equity movement of the 1980’s” (O'Connell, 2016).
 
-In North Carolina and across the US, a common expression of environmental injustice is the disproportionate biased siting of locally unwanted land uses sited next to low income and minority communities. An example of such a land use is energy production. The largest source of energy in the U.S. is fossil fuels and the burning of fossil fuels at power plants created emissions that can lead to respiratory and cardiovascular problems and increase the possibility of health issues ranging from cancer to immune system damage (_____). Minority, low-income, and indigenous populations frequently bear a disproportionate burden of these environmental harms and adverse health outcomes as a result of these siting trends (_____).
+In North Carolina and across the US, a common expression of environmental injustice is the disproportionate biased siting of locally unwanted land uses sited next to low income and minority communities. An example of such a land use is energy production. The largest source of energy in the U.S. is fossil fuels and the burning of fossil fuels at power plants created emissions that can lead to respiratory and cardiovascular problems and increase the possibility of health issues ranging from cancer to immune system damage (Clean Air Markets). Minority, low-income, and indigenous populations frequently bear a disproportionate burden of these environmental harms and adverse health outcomes as a result of these siting trends (Clean Air Markets).
 
 Due to a growing awareness of this trend and actions to combat environmental injustice across the U.S., it is necessary to examine the present day correlation of energy generators and minority, low income communities. This analysis explores the current (2020) distribution of utilities in relation to the distribution of low income communities to investigate to what extent this correlation still exists. This analysis further explores if that trend is true for different energy types. We were interested to see if there was any difference in the distribution of fossil fuel based utilities versus that of renewable energy sources in relation to minority and low income communities. 
 
@@ -257,4 +257,9 @@ Energy generators have historically and continue to be disproportionately locate
 \newpage
 
 # References
-<add references here if relevant, otherwise delete this section> 
+
+O’Connell, J., Hatch, E. & Salyers, J. (2016). Inside NC: Birthplace of Environmental Justice. North Carolina Folklife Institute. https://www.ncfolk.org/2017/inside-nc-birthplace-of-environmental-justice/
+
+Office of Legacy Management. Environmental Justice History. Energy.gov. https://www.energy.gov/lm/services/environmental-justice/environmental-justice-history
+
+Clean Air Markets. Power Plants and Neighboring Communities. EPA. https://www.energy.gov/lm/services/environmental-justice/environmental-justice-history
