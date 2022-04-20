@@ -142,7 +142,7 @@ library(cowplot)
 
 ## Plot - number of generators by fuel type
 Renewable.v.ff.gen <-
-  ggplot(data = full.data, mapping = aes(x = FuelType, fill = Renewable.v.FossilFuel)) +
+  ggplot(data = full.data.gen, mapping = aes(x = FuelType, fill = Renewable.v.FossilFuel)) +
   geom_bar() +
   labs(title = "Number of Generators by Fuel Type",
        y = "Count", x = "Energy Generation Type") +
@@ -153,9 +153,12 @@ ggsave("./Output/RvFPlot_Gen.jpg", Renewable.v.ff.gen, dpi = 300)
 
 ## Plot - nameplate capacity by fuel type
 aggregated.gen.data.2 <- 
-  full.data %>%
+  full.data.gen %>%
   group_by(County, Renewable.v.FossilFuel, FuelType) %>%
   dplyr::summarise(total.np.cap = sum(Nameplate.Capacity1))
+
+write.csv(aggregated.gen.data.2, row.names = FALSE, 
+          file = "./Data/Processed/NPCapByFuelType.csv")
 
 Renewable.v.ff.cap <-
   ggplot(data = aggregated.gen.data.2) +
@@ -199,7 +202,7 @@ county.fueltype.percent <-
   summarise(across(c(Hydroelectric:Wind), ~ .x/gen_per_county, .names = 'percent_{col}'))
 
 RvF.per.county <-
-  full.data %>%
+  full.data.gen %>%
   group_by(County) %>%
   summarise()
 

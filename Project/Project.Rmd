@@ -108,6 +108,31 @@ ggplot() +
 ```
 
 
+
+``` {r}
+full.data.gen <- read.csv("../Data/Processed/NCGenerator&Income.csv")
+
+## Plot - number of generators by fuel type
+Renewable.v.ff.gen <-
+  ggplot(data = full.data.gen, mapping = aes(x = FuelType, fill = Renewable.v.FossilFuel)) +
+  geom_bar() +
+  labs(title = "Number of Generators by Fuel Type",
+       y = "Count", x = "Energy Generation Type") +
+  theme(axis.text.x = element_text(angle = 45,  hjust = 1))
+print(Renewable.v.ff.gen)
+
+aggregated.gen.data.2 <- read.csv("../Data/Processed/NPCapByFuelType.csv")
+
+## Plot - nameplate capacity by fuel type
+Renewable.v.ff.cap <-
+  ggplot(data = aggregated.gen.data.2) +
+  geom_col(mapping = aes(x = FuelType, y = total.np.cap, fill = Renewable.v.FossilFuel)) +
+  labs(title = "Nameplate Capacity by Fuel Type",
+       y = "Nameplate Capacity (MW)", x = "Energy Generation Type") +
+  theme(axis.text.x = element_text(angle = 45,  hjust = 1))
+print(Renewable.v.ff.cap)
+```
+
 \newpage
 
 # Analysis

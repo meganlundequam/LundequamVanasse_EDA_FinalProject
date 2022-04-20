@@ -150,6 +150,7 @@ write.csv(generatorsCensusCategoriesComplete, row.names = FALSE,
 
 additional.census <- read.csv("../Data/Processed/UpdatedCensus.csv", stringsAsFactors = TRUE) 
 
+### my code starts here
 ## Generator Info
 census.data <- read.csv("../Data/Processed/generatorsCensusCategoriesComplete.csv", stringsAsFactors = TRUE)
 
@@ -163,19 +164,22 @@ generator.data <-
   subset(select = c(County, Plant.Code, Prime.Mover, Nameplate.Capacity..MW.))
 
 ## Adding income to the full generator data by county
-full.data <- cbind(census.data, generator.data$Nameplate.Capacity..MW.) %>% 
+full.data.gen <- cbind(census.data, generator.data$Nameplate.Capacity..MW.) %>% 
   dplyr::rename(c("Nameplate.Capacity" = `generator.data$Nameplate.Capacity..MW.`)) %>% 
   dplyr::mutate(Nameplate.Capacity1 = as.numeric(as.character(Nameplate.Capacity)))
 
+write.csv(full.data.gen, row.names = FALSE, 
+          file = "./Data/Processed/NCGenerator&Income.csv")
+
 ## Aggregating the generator data so that it groups all of it by county and by generation type
 aggregated.gen.data <- 
-  full.data %>%
+  full.data.gen %>%
   group_by(County, Renewable.v.FossilFuel) %>%
   dplyr::summarise(energy.type.gen = sum(Nameplate.Capacity1))
 
 ## Data table with just the number of generators in each county divided out by renewable v ff
 gen.per.county <- 
-  full.data %>%
+  full.data.gen %>%
   group_by(County, Renewable.v.FossilFuel) %>%
   dplyr::summarise(Number.of.Generators = n())
 
@@ -186,7 +190,7 @@ write.csv(gen.per.county, row.names = FALSE,
 
 # Data table with the breakdown of energy type in each county
 fueltype.per.county <- 
-  full.data %>%
+  full.data.gen %>%
   count(County, FuelType)
 
 ```
@@ -194,7 +198,7 @@ fueltype.per.county <-
 
 ``` {r}
 
-#making plots with data
+
 
 
 ```
@@ -219,7 +223,7 @@ generators.per.county <-
 
 ## Aggregating the generator data so that it groups all of it by county and by number of plants
 aggregated.gen.data.plant.total <- 
-  full.data %>%
+  full.data.gen %>%
   group_by(County, Renewable.v.FossilFuel) %>%
   dplyr::summarise(Number.of.Generators = count(Plant.Name))
 ```
