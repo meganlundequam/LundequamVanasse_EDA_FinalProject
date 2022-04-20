@@ -113,6 +113,14 @@ Renewable.county <-
 Fossil.county <- 
   Final.gen.census %>%
   subset(Renewable.v.FossilFuel=='Fossil Fuel') 
+
+write.csv(Fossil.county, row.names = FALSE, 
+          file = "../Data/Processed/FFEnergyDataNCcounties.csv")
+write.csv(Renewable.county, row.names = FALSE, 
+          file = "../Data/Processed/RenewableEnergyDataNCcounties.csv")
+write.csv(Final.gen.census, row.names = FALSE, 
+          file = "../Data/Processed/EnergyDataNCcounties.csv")
+
 ```
 
 ```{r}
