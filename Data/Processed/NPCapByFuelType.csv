@@ -1,0 +1,192 @@
+"County","Renewable.v.FossilFuel","FuelType","total.np.cap"
+"Alamance County","Renewable Fuel","Hydroelectric",1.5
+"Alamance County","Renewable Fuel","Solar",28.2
+"Alexander County","Renewable Fuel","Solar",11.2
+"Anson County","Fossil Fuel","Natural Gas",343.8
+"Anson County","Fossil Fuel","Petroleum Product",70
+"Anson County","Renewable Fuel","Hydroelectric",24.6
+"Anson County","Renewable Fuel","Solar",127.2
+"Beaufort County","Other","Waste Heat",54
+"Beaufort County","Renewable Fuel","Solar",142.5
+"Bertie County","Renewable Fuel","Solar",40
+"Bladen County","Fossil Fuel","Petroleum Product",28.5
+"Bladen County","Renewable Fuel","Solar",197.4
+"Brunswick County","Fossil Fuel","Natural Gas",52.5
+"Brunswick County","Nuclear","Nuclear",NA
+"Brunswick County","Renewable Fuel","Solar",9.9
+"Brunswick County","Renewable Fuel","Solid Renewable Fuel",135
+"Buncombe County","Fossil Fuel","Natural Gas",1011.5
+"Buncombe County","Other","Energy Storage",8.8
+"Buncombe County","Renewable Fuel","Hydroelectric",7.4
+"Buncombe County","Renewable Fuel","Solar",5.1
+"Burke County","Fossil Fuel","Petroleum Product",8.9
+"Burke County","Renewable Fuel","Hydroelectric",27.7
+"Burke County","Renewable Fuel","Solar",11.9
+"Cabarrus County","Renewable Fuel","Gaseous Renewable Fuel",14.9
+"Cabarrus County","Renewable Fuel","Solar",89.2
+"Caldwell County","Fossil Fuel","Petroleum Product",2.2
+"Caldwell County","Renewable Fuel","Hydroelectric",25.5
+"Caldwell County","Renewable Fuel","Solar",1.1
+"Camden County","Renewable Fuel","Solar",15
+"Caswell County","Renewable Fuel","Solar",22.9
+"Catawba County","Fossil Fuel","Coal",2119
+"Catawba County","Fossil Fuel","Petroleum Product",1.8
+"Catawba County","Renewable Fuel","Gaseous Renewable Fuel",13.4
+"Catawba County","Renewable Fuel","Hydroelectric",36
+"Catawba County","Renewable Fuel","Solar",102
+"Chatham County","Renewable Fuel","Hydroelectric",5.6
+"Chatham County","Renewable Fuel","Solar",37.8
+"Cherokee County","Renewable Fuel","Hydroelectric",165.6
+"Cherokee County","Renewable Fuel","Solar",3
+"Chowan County","Fossil Fuel","Petroleum Product",2.4
+"Chowan County","Renewable Fuel","Solar",15
+"Clay County","Renewable Fuel","Hydroelectric",15
+"Cleveland County","Fossil Fuel","Coal",1530.5
+"Cleveland County","Fossil Fuel","Natural Gas",1279.9
+"Cleveland County","Fossil Fuel","Petroleum Product",6
+"Cleveland County","Renewable Fuel","Solar",81.3
+"Columbus County","Renewable Fuel","Liquid Renewable Fuel",51.5
+"Columbus County","Renewable Fuel","Solar",65
+"Craven County","Renewable Fuel","Gaseous Renewable Fuel",5.4
+"Craven County","Renewable Fuel","Liquid Renewable Fuel",38.1
+"Craven County","Renewable Fuel","Solar",29
+"Craven County","Renewable Fuel","Solid Renewable Fuel",50
+"Cumberland County","Fossil Fuel","Natural Gas",303.4
+"Cumberland County","Renewable Fuel","Solar",201.8
+"Currituck County","Renewable Fuel","Solar",162.4
+"Dare County","Fossil Fuel","Petroleum Product",15
+"Davidson County","Fossil Fuel","Petroleum Product",10.2
+"Davidson County","Renewable Fuel","Gaseous Renewable Fuel",1.6
+"Davidson County","Renewable Fuel","Hydroelectric",33
+"Davie County","Renewable Fuel","Solar",30.4
+"Duplin County","Renewable Fuel","Solar",176.6
+"Durham County","Renewable Fuel","Gaseous Renewable Fuel",2.2
+"Durham County","Renewable Fuel","Solar",16.5
+"Edgecombe County","Renewable Fuel","Solar",201.9
+"Forsyth County","Renewable Fuel","Gaseous Renewable Fuel",6.9
+"Forsyth County","Renewable Fuel","Solar",6.7
+"Forsyth County","Renewable Fuel","Solid Renewable Fuel",8.4
+"Franklin County","Fossil Fuel","Petroleum Product",1
+"Franklin County","Renewable Fuel","Solar",90.4
+"Gaston County","Fossil Fuel","Coal",1148.4
+"Gaston County","Fossil Fuel","Petroleum Product",25.9
+"Gaston County","Renewable Fuel","Gaseous Renewable Fuel",4.2
+"Gaston County","Renewable Fuel","Hydroelectric",61.8
+"Gaston County","Renewable Fuel","Solar",40.3
+"Gates County","Renewable Fuel","Solar",15
+"Graham County","Renewable Fuel","Hydroelectric",185
+"Granville County","Renewable Fuel","Solar",32.7
+"Greene County","Renewable Fuel","Solar",13.9
+"Guilford County","Fossil Fuel","Petroleum Product",14.6
+"Guilford County","Renewable Fuel","Gaseous Renewable Fuel",1.6
+"Guilford County","Renewable Fuel","Solar",25.7
+"Halifax County","Fossil Fuel","Petroleum Product",180
+"Halifax County","Renewable Fuel","Hydroelectric",100
+"Halifax County","Renewable Fuel","Liquid Renewable Fuel",28.3
+"Halifax County","Renewable Fuel","Solar",201.9
+"Harnett County","Renewable Fuel","Solar",44.1
+"Haywood County","Renewable Fuel","Hydroelectric",108
+"Haywood County","Renewable Fuel","Liquid Renewable Fuel",52.5
+"Haywood County","Renewable Fuel","Solar",1.5
+"Henderson County","Renewable Fuel","Hydroelectric",5
+"Henderson County","Renewable Fuel","Solar",4
+"Hertford County","Renewable Fuel","Solar",176.5
+"Hoke County","Renewable Fuel","Solar",14.8
+"Hyde County","Fossil Fuel","Petroleum Product",3
+"Hyde County","Other","Energy Storage",1
+"Iredell County","Fossil Fuel","Petroleum Product",4
+"Iredell County","Renewable Fuel","Gaseous Renewable Fuel",3.2
+"Iredell County","Renewable Fuel","Hydroelectric",25.8
+"Iredell County","Renewable Fuel","Solar",6.4
+"Jackson County","Renewable Fuel","Hydroelectric",50.8
+"Johnston County","Renewable Fuel","Gaseous Renewable Fuel",1.6
+"Johnston County","Renewable Fuel","Solar",96.9
+"Jones County","Renewable Fuel","Solar",24.9
+"Lee County","Renewable Fuel","Solar",36.8
+"Lenoir County","Fossil Fuel","Petroleum Product",9.2
+"Lenoir County","Renewable Fuel","Solar",93.9
+"Lincoln County","Fossil Fuel","Natural Gas",1753.6
+"Lincoln County","Fossil Fuel","Petroleum Product",1.8
+"Lincoln County","Renewable Fuel","Hydroelectric",350
+"Lincoln County","Renewable Fuel","Solar",10
+"Macon County","Renewable Fuel","Hydroelectric",45.6
+"Madison County","Renewable Fuel","Hydroelectric",1.2
+"Martin County","Renewable Fuel","Liquid Renewable Fuel",42
+"Martin County","Renewable Fuel","Solar",102
+"Martin County","Renewable Fuel","Solid Renewable Fuel",72
+"Mecklenburg County","Fossil Fuel","Petroleum Product",6.2
+"Mecklenburg County","Nuclear","Nuclear",NA
+"Mecklenburg County","Renewable Fuel","Gaseous Renewable Fuel",8.7
+"Mecklenburg County","Renewable Fuel","Solar",1.9
+"Montgomery County","Renewable Fuel","Gaseous Renewable Fuel",9.6
+"Montgomery County","Renewable Fuel","Hydroelectric",234.8
+"Montgomery County","Renewable Fuel","Solar",46.9
+"Moore County","Renewable Fuel","Solar",39.2
+"Nash County","Renewable Fuel","Hydroelectric",1.6
+"Nash County","Renewable Fuel","Solar",188.8
+"New Hanover County","Fossil Fuel","Natural Gas",851
+"New Hanover County","Renewable Fuel","Solar",2.8
+"Northampton County","Renewable Fuel","Hydroelectric",177.6
+"Northampton County","Renewable Fuel","Solar",222.8
+"Onslow County","Renewable Fuel","Gaseous Renewable Fuel",2
+"Onslow County","Renewable Fuel","Solar",22.7
+"Orange County","Fossil Fuel","Coal",28
+"Orange County","Fossil Fuel","Petroleum Product",4
+"Orange County","Renewable Fuel","Solar",13
+"Pamlico County","Renewable Fuel","Solar",5
+"Pasquotank County","Renewable Fuel","Solar",43.1
+"Pender County","Renewable Fuel","Solar",132.3
+"Perquimans County","Renewable Fuel","Solar",51.2
+"Perquimans County","Renewable Fuel","Wind",208
+"Person County","Fossil Fuel","Coal",3321.4
+"Person County","Renewable Fuel","Solar",22.5
+"Person County","Renewable Fuel","Solid Renewable Fuel",67.5
+"Pitt County","Fossil Fuel","Natural Gas",4
+"Pitt County","Fossil Fuel","Petroleum Product",5.2
+"Pitt County","Renewable Fuel","Solar",84
+"Pitt County","Renewable Fuel","Solid Renewable Fuel",1.7
+"Polk County","Renewable Fuel","Hydroelectric",5.4
+"Randolph County","Renewable Fuel","Solar",35.3
+"Richmond County","Fossil Fuel","Natural Gas",2588.6
+"Richmond County","Renewable Fuel","Solar",74.6
+"Robeson County","Fossil Fuel","Petroleum Product",163
+"Robeson County","Renewable Fuel","Gaseous Renewable Fuel",2
+"Robeson County","Renewable Fuel","Solar",209
+"Robeson County","Renewable Fuel","Solid Renewable Fuel",34.7
+"Rockingham County","Fossil Fuel","Natural Gas",1675.4
+"Rockingham County","Renewable Fuel","Hydroelectric",1.2
+"Rockingham County","Renewable Fuel","Solar",24.9
+"Rowan County","Fossil Fuel","Natural Gas",1889.9
+"Rowan County","Fossil Fuel","Petroleum Product",2.2
+"Rowan County","Renewable Fuel","Solar",46.3
+"Rutherford County","Fossil Fuel","Petroleum Product",1
+"Rutherford County","Renewable Fuel","Hydroelectric",3.6
+"Rutherford County","Renewable Fuel","Solar",118.6
+"Sampson County","Fossil Fuel","Petroleum Product",2.4
+"Sampson County","Renewable Fuel","Gaseous Renewable Fuel",9.6
+"Sampson County","Renewable Fuel","Solar",42.2
+"Scotland County","Renewable Fuel","Solar",126.8
+"Stanly County","Fossil Fuel","Petroleum Product",5.4
+"Stanly County","Renewable Fuel","Hydroelectric",31.4
+"Stanly County","Renewable Fuel","Solar",5
+"Stokes County","Fossil Fuel","Coal",NA
+"Stokes County","Renewable Fuel","Solar",8.9
+"Surry County","Renewable Fuel","Gaseous Renewable Fuel",1.6
+"Surry County","Renewable Fuel","Solar",7.7
+"Swain County","Renewable Fuel","Hydroelectric",254.7
+"Union County","Fossil Fuel","Natural Gas",30
+"Union County","Fossil Fuel","Petroleum Product",1.8
+"Union County","Renewable Fuel","Solar",74.9
+"Vance County","Renewable Fuel","Solar",107.8
+"Wake County","Fossil Fuel","Natural Gas",17.8
+"Wake County","Nuclear","Nuclear",950.9
+"Wake County","Renewable Fuel","Gaseous Renewable Fuel",9
+"Wake County","Renewable Fuel","Solar",21.6
+"Warren County","Renewable Fuel","Solar",50.9
+"Washington County","Renewable Fuel","Solar",99
+"Wayne County","Fossil Fuel","Natural Gas",2047.7
+"Wayne County","Renewable Fuel","Gaseous Renewable Fuel",3.3
+"Wayne County","Renewable Fuel","Solar",104.8
+"Wilson County","Fossil Fuel","Petroleum Product",2.8
+"Wilson County","Renewable Fuel","Solar",128.4
+"Yadkin County","Renewable Fuel","Solar",13.5

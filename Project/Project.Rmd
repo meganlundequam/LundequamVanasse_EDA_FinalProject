@@ -50,19 +50,39 @@ censusData = st_read("../Data/Processed/NC_county_complete.geojson")
 
 # Rationale and Research Questions
 
+Awareness of environmental injustice has been prevalent in North Carolina for decades. In fact, Warren County, a county just north of Durham, is widely recognized as the birthplace of today’s environmental justice movement(_____). In the late 1980s, the National Association for the Advancement of Colored People and others staged a protest against the state of North Carolina’s decision to site a hazardous waste landfill in the predominantly colored county(_____). Although the protests failed to prevent the siting of the disposal facility, the event shed light on environmental injustice trends with the EPA describing the movement in its 1994 Environmental Equity Draft as “the watershed event that led to the environmental equity movement of the 1980’s” (_____).
+
+In North Carolina and across the US, a common expression of environmental injustice is the disproportionate biased siting of locally unwanted land uses sited next to low income and minority communities. An example of such a land use is energy production. The largest source of energy in the U.S. is fossil fuels and the burning of fossil fuels at power plants created emissions that can lead to respiratory and cardiovascular problems and increase the possibility of health issues ranging from cancer to immune system damage (_____). Minority, low-income, and indigenous populations frequently bear a disproportionate burden of these environmental harms and adverse health outcomes as a result of these siting trends (_____).
+
+Due to a growing awareness of this trend and actions to combat environmental injustice across the U.S., it is necessary to examine the present day correlation of energy generators and minority, low income communities. This analysis explores the current (2020) distribution of utilities in relation to the distribution of low income communities to investigate to what extent this correlation still exists. This analysis further explores if that trend is true for different energy types. We were interested to see if there was any difference in the distribution of fossil fuel based utilities versus that of renewable energy sources in relation to minority and low income communities. 
+
+## Research Questions:
+
+This study examines the following key questions:
+
+### Question 1: Are energy production utilities in North Carolina located closer to low-income communities?
+
+### Question 2: Does the location of energy production utilities vary according to energy type? i.e., do different types of utilities have differing degrees of correlation with low income and minority communities?
 
 
 \newpage
 
 # Dataset Information
 
+The data used for this analysis falls into two categories, energy related data and demographic data. 
+We derived energy related data from the US Energy Information Association for the year 2020 (EIA-860 2020). The complete set of data files contains generator-level specific information for each year about existing and planned generators and associated environmental equipment at electric power plants with 1 megawatt or greater of combined nameplate capacity. The data sets utilized for this analysis include the plant-level data (2__Plant_Y2020.xlsx) and generator-level data (3_1_GeneratorY2020.xlsx) (where only data contained in the "operable" tab was analyzed). Geographic coordinates were obtained from the plant-level data set and combined with generator-level variables including Utility ID, Utility Name, Plant Code, Plant Name, State, County, Technology, Energy Source 1 (which represents the predominant energy that fuels the generator), and Nameplate Capacity (MW) (which represents the generator's maximum generation capacity in megawatts). 
 
+We derived demographic data from the US Census Bureau which we obtained through the tidycensus R package (API key = a8cad28557bae7c89aae6ea747549dd4816c6fbd) and specifically looked at the variables representing median household income, total population, the percent of the population with college degrees, the percent of the population at or below the poverty line, the percent of the population that is considered a 'minority' and the percent of the population that has received no schooling. For this analysis, we aggregated each of these variables by county.
 
 \newpage
 
 # Exploratory Analysis
 
+<<<<<<< HEAD
 There is a marked difference in median household income across counties in North Carolina. Orange and Wake have values over \$100,000, while Halifax and Robeson fall below \$50,000. 
+=======
+In our exploratory analysis, we first examined the distribution of income levels across the state. Figure 1 shows there is a marked difference in median household income across counties in North Carolina. 
+>>>>>>> abfdec1161a3a4ededef7aba41f46321797b03fb
 
 ```{r, echo=FALSE, message=FALSE, fig.height=9}
 
@@ -71,12 +91,16 @@ min(censusData$MedianFamilyIncome)
 ggplot(censusData, aes(x=MedianFamilyIncome, y=reorder(CountyShort, MedianFamilyIncome))) +
   geom_point() + 
   scale_x_continuous(labels=comma) + 
-  labs(x="Median Household Income", y="NC Counties") + 
+  labs(title = "Figure 1. Distribution of Median Family Income Across NC Counties", x="Median Household Income", y="NC Counties") + 
   theme(text = element_text(size = 8))
 
 ```
 
+<<<<<<< HEAD
 Energy generators are diverse in type and widespread throughout the state. Yet while solar appears to be the most abundant, it makes up small fraction of total energy generation. Conversely, there are only 5 nuclear sites, yet it makes up a third of the state's energy production.
+=======
+Figure 2 shows the different types of generators across North Carolina, defined by fuel type. The counties are coded based on the median family income in that county. Note that there does appear to be some overlap between generator location and lower income counties, however a clear pattern is not discernible based on this visual alone. Energy generators are diverse in type and widespread throughout the state. Also of note is that generators powered by solar appear to be the most abundant, despite widespread knowledge that the predominant energy sources in the US are fossil fuels.
+>>>>>>> abfdec1161a3a4ededef7aba41f46321797b03fb
 
 ```{r, echo=FALSE, results='hide', fig.height=7, fig.width=10}
 
@@ -105,108 +129,64 @@ ggplot() +
     "Wind" = "#80a6ff"
     )
   ) + 
-  labs(color="Generator Type", fill="Median Household Income") + 
+  labs(title = "Figure 2. Energy Generators and Income Levels in North Carolina Counties", color="Generator Type", fill="Median Household Income") + 
   theme_void() 
 
+```
+
+Figures 3 and 4 provide the context for interpreting the above figure. Figure 3 provides a breakdown of the number of individual generators based on fuel type, coded according to whether or not that fuel type is considered a renewable fuel, a fossil fuel, or other, for the state of North Carolina. While the renewable-fueled generators are far greater in number, Figure 4 shows that the majority of energy production comes from fossil fuel sources. 
+
+```{r echo=FALSE, warning=FALSE}
+
+full.data.gen <- read.csv("../Data/Processed/NCGenerator&Income.csv")
+
+## Plot - number of generators by fuel type
+Renewable.v.ff.gen <-
+  ggplot(data = full.data.gen, mapping = aes(x = FuelType, fill = Renewable.v.FossilFuel)) +
+  geom_bar() +
+  labs(title = "Figure 3. Number of Generators by Fuel Type",
+       y = "Count", x = "Energy Generation Type") +
+  theme(axis.text.x = element_text(angle = 45,  hjust = 1))
+print(Renewable.v.ff.gen)
+```
+
+Figure 4 provides a visual representation of the aggregated energy production potential of the individual generators, using the nameplate capacity for each generator, again based on fuel type and coded according to renewable versus fossil fuel categorization. This shows that the largest contributor to energy production in North Carolina is natural gas, followed by coal.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+aggregated.gen.data.2 <- read.csv("../Data/Processed/NPCapByFuelType.csv")
+
+## Plot - nameplate capacity by fuel type
+Renewable.v.ff.cap <-
+  ggplot(data = aggregated.gen.data.2) +
+  geom_col(mapping = aes(x = FuelType, y = total.np.cap, fill = Renewable.v.FossilFuel)) +
+  labs(title = "Figure 4. Nameplate Capacity by Fuel Type",
+       y = "Nameplate Capacity (MW)", x = "Energy Generation Type") +
+  theme(axis.text.x = element_text(angle = 45,  hjust = 1))
+print(Renewable.v.ff.cap)
 ```
 
 \newpage
 
 # Analysis
 
-
-```{r include=FALSE}
-## Adding new census info and cleaning it
-additional.census <- read.csv("../Data/Processed/UpdatedCensus.csv", stringsAsFactors = TRUE) 
-additional.census <- 
-  additional.census %>%
-  subset(select=c(County, TotalPopulation, NoSchooling, Mobility, RaceAllocation, DetailedRace)) %>%
-  rename(c("PovertyMobility" = Mobility, "WhitePopMobility" = RaceAllocation, "CollegeDeg" = DetailedRace)) %>%
-  mutate(Per.PovertyMobility = (PovertyMobility/TotalPopulation),
-         MinorityMobility = (TotalPopulation - WhitePopMobility),
-         Per.MinorityMobility = (MinorityMobility/TotalPopulation),
-         Per.NoSchooling = (NoSchooling/TotalPopulation),
-         Per.CollegeDeg = (CollegeDeg/TotalPopulation)
-         )
-
-## Generator Info
-census.data <- read.csv("../Data/Processed/generatorsCensusCategoriesComplete.csv", stringsAsFactors = TRUE)
-census.data <- 
-  full_join(census.data, additional.census) %>%
-  drop_na(Energy.Source.1)
-
-## Getting nameplate capacity
-generator.data <- read.csv("../Data/2020EnergyData/3_1_Generator_Y2020.csv", stringsAsFactors = TRUE)
-
-## Selecting variables of interest
-generator.data <- 
-  generator.data %>%
-  subset(generator.data$State == "NC") %>%
-  subset(select = c(County, Plant.Code, Prime.Mover, Nameplate.Capacity..MW.))
-
-## Adding income to the full generator data by county
-full.data <- cbind(census.data, generator.data$Nameplate.Capacity..MW.) %>% 
-  rename(c("Nameplate.Capacity" = `generator.data$Nameplate.Capacity..MW.`)) %>% 
-  mutate(Nameplate.Capacity1 = as.numeric(as.character(Nameplate.Capacity)))
-
-```
-
-
-```{r include=FALSE}
-## Aggregating the generator data so that it groups all of it by county and by generation type
-aggregated.gen.data <- 
-  full.data %>%
-  group_by(County, Renewable.v.FossilFuel) %>%
-  dplyr::summarise(energy.type.gen = sum(Nameplate.Capacity1))
-
-## Joining it to the census data to have capacity and income in same file & selecting specific variables
-processed.gen.census <- 
-  full_join(aggregated.gen.data, census.data) %>%
-  subset(select=c(County, Renewable.v.FossilFuel, energy.type.gen, MedianHouseholdIncome, TotalPopulation, Per.CollegeDeg, Per.PovertyMobility, Per.MinorityMobility, Per.NoSchooling)) %>%
-  distinct(.keep_all = TRUE)
-
-## Creating a total generation variable, Removing fossil vs renewable distinction
-total.gen.census <- 
-  processed.gen.census %>%
-  group_by(County) %>%
-  dplyr::summarise(total.gen = sum(energy.type.gen))
-
-##Separating into 3 different data sets to analyze different impacts
-Final.gen.census <-
-  full_join(processed.gen.census, total.gen.census) 
-
-Renewable.county <- 
-  Final.gen.census %>%
-  subset(Renewable.v.FossilFuel=='Renewable Fuel') 
-
-Fossil.county <- 
-  Final.gen.census %>%
-  subset(Renewable.v.FossilFuel=='Fossil Fuel') 
-```
-
-
 ```{r echo=FALSE}
-## Correlation Plot
-Corr.data <- 
-  Renewable.county %>%
-  select(MedianHouseholdIncome:total.gen) %>%
-  na.omit() %>%
-  subset(select=-c(County))
-
-corrplot(Corr.data, method = "ellipse")
-corrplot.mixed(Corr.data, upper = "ellipse")
+## Reading files in 
+All.Energy <- read.csv("../Data/Processed/EnergyDataNCcounties.csv", stringsAsFactors = TRUE)
+FossilFuel.Energy <- read.csv("../Data/Processed/FFEnergyDataNCcounties.csv", stringsAsFactors = TRUE)
+Renewable.Energy <- read.csv("../Data/Processed/RenewableEnergyDataNCcounties.csv", stringsAsFactors = TRUE)
 
 ## All variable Regression
 total.regression.variables <- 
-  lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
+  lm(data = All.Energy, log(total.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
 fossil.reg.variables <- 
-  lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+  lm(data = FossilFuel.Energy, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
 renewable.reg.variables <- 
-  lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+  lm(data = Renewable.Energy, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
 
@@ -217,19 +197,19 @@ step(renewable.reg.variables)
 
 ## Regression Analysis
 renewable.reg <- 
-  lm(data = Renewable.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+  lm(data = Renewable.Energy, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
         Per.MinorityMobility)
 summary(renewable.reg)
 
 
 total.energy.reg <- 
-  lm(data = Final.gen.census, log(total.gen) ~ log(MedianHouseholdIncome) + 
+  lm(data = All.Energy, log(total.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
 summary(total.energy.reg)
 
 fossil.reg <- 
-  lm(data = Fossil.county, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
+  lm(data = FossilFuel.Energy, log(energy.type.gen) ~ log(MedianHouseholdIncome) + 
        Per.CollegeDeg + Per.PovertyMobility + 
        Per.MinorityMobility)
 summary(fossil.reg)
@@ -269,17 +249,13 @@ we hypothesized, because although renewable energy is often thought of as a
 luxury resource, the infrastructure still undergoes NIMBY criticism by many 
 wealthier individuals. 
 
-## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
-
-## Question 2: 
-
-
 
 
 \newpage
 
 # Summary and Conclusions
 
+Based on this 
 
 \newpage
 
