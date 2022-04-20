@@ -234,7 +234,7 @@ wealthier individuals.
 
 The figures below demonstrate the Residuals vs Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage analysis of the renewable energy regression conveying the fit of the regression analysis. 
 
-```{r echo=FALSE}
+```{r echo=FALSE fig.cap="Renewable Regression Analysis"}
 plot(renewable.reg)
 ```
 
