@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.8.24)  20 APR 2022 15:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.8.24)  20 APR 2022 15:59
 entering extended mode
 **./Project.tex
 (Project.tex
@@ -529,121 +529,107 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \tf@toc=\write3
 \openout3 = `Project.toc'.
 
-[2] (Project.lot)
-\tf@lot=\write4
-\openout4 = `Project.lot'.
+[2] (Project.lof)
+\tf@lof=\write4
+\openout4 = `Project.lof'.
 
-[3] (Project.lof)
-\tf@lof=\write5
-\openout5 = `Project.lof'.
-
-[4] [5] [6]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-89.
-(C:\Users\casey\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-<Project_files/figure-latex/unnamed-chunk-1-1.pdf, id=68, 469.755pt x 650.43pt>
+[3] [4] [5]
+<Project_files/figure-latex/unnamed-chunk-1-1.pdf, id=69, 469.755pt x 650.43pt>
 
 File: Project_files/figure-latex/unnamed-chunk-1-1.pdf Graphic file (type pdf)
 <use Project_files/figure-latex/unnamed-chunk-1-1.pdf>
 Package pdftex.def Info: Project_files/figure-latex/unnamed-chunk-1-1.pdf  used
- on input line 195.
+ on input line 189.
 (pdftex.def)             Requested size: 469.75386pt x 650.4284pt.
 
-LaTeX Warning: Float too large for page by 26.83134pt on input line 197.
+LaTeX Warning: Float too large for page by 26.83134pt on input line 191.
 
-<Project_files/figure-latex/unnamed-chunk-2-1.pdf, id=69, 722.7pt x 505.89pt>
+<Project_files/figure-latex/unnamed-chunk-2-1.pdf, id=70, 722.7pt x 505.89pt>
 File: Project_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 <use Project_files/figure-latex/unnamed-chunk-2-1.pdf>
 Package pdftex.def Info: Project_files/figure-latex/unnamed-chunk-2-1.pdf  used
- on input line 209.
+ on input line 205.
 (pdftex.def)             Requested size: 469.76045pt x 328.8323pt.
-<Project_files/figure-latex/unnamed-chunk-3-1.pdf, id=70, 469.755pt x 325.215pt
+<Project_files/figure-latex/unnamed-chunk-3-1.pdf, id=71, 469.755pt x 325.215pt
 >
 File: Project_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
 <use Project_files/figure-latex/unnamed-chunk-3-1.pdf>
 Package pdftex.def Info: Project_files/figure-latex/unnamed-chunk-3-1.pdf  used
  on input line 219.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[7 <./Project_files/figure-latex/unnamed-chunk-2-1.pdf>] [8 <./Project_files/fi
-gure-latex/unnamed-chunk-1-1.pdf>]
-<Project_files/figure-latex/unnamed-chunk-4-1.pdf, id=97, 469.755pt x 325.215pt
+<Project_files/figure-latex/unnamed-chunk-4-1.pdf, id=72, 469.755pt x 325.215pt
 >
 File: Project_files/figure-latex/unnamed-chunk-4-1.pdf Graphic file (type pdf)
 <use Project_files/figure-latex/unnamed-chunk-4-1.pdf>
 Package pdftex.def Info: Project_files/figure-latex/unnamed-chunk-4-1.pdf  used
- on input line 228.
+ on input line 232.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[9 <./Project_files/figure-latex/unnamed-chunk-3-1.pdf>] [10 <./Project_files/f
-igure-latex/unnamed-chunk-4-1.pdf>]
-<Project_files/figure-latex/unnamed-chunk-6-1.pdf, id=116, 469.755pt x 325.215p
+[6] [7 <./Project_files/figure-latex/unnamed-chunk-1-1.pdf>] [8 <./Project_file
+s/figure-latex/unnamed-chunk-2-1.pdf>] [9 <./Project_files/figure-latex/unnamed
+-chunk-3-1.pdf>] [10 <./Project_files/figure-latex/unnamed-chunk-4-1.pdf>]
+<Project_files/figure-latex/unnamed-chunk-6-1.pdf, id=120, 469.755pt x 325.215p
 t>
 File: Project_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 <use Project_files/figure-latex/unnamed-chunk-6-1.pdf>
 Package pdftex.def Info: Project_files/figure-latex/unnamed-chunk-6-1.pdf  used
- on input line 235.
+ on input line 275.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Project_files/figure-latex/unnamed-chunk-6-2.pdf, id=117, 469.755pt x 325.215p
+<Project_files/figure-latex/unnamed-chunk-6-2.pdf, id=121, 469.755pt x 325.215p
 t>
 File: Project_files/figure-latex/unnamed-chunk-6-2.pdf Graphic file (type pdf)
 <use Project_files/figure-latex/unnamed-chunk-6-2.pdf>
 Package pdftex.def Info: Project_files/figure-latex/unnamed-chunk-6-2.pdf  used
- on input line 236.
+ on input line 276.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Project_files/figure-latex/unnamed-chunk-6-3.pdf, id=118, 469.755pt x 325.215p
+<Project_files/figure-latex/unnamed-chunk-6-3.pdf, id=122, 469.755pt x 325.215p
 t>
 File: Project_files/figure-latex/unnamed-chunk-6-3.pdf Graphic file (type pdf)
 <use Project_files/figure-latex/unnamed-chunk-6-3.pdf>
 Package pdftex.def Info: Project_files/figure-latex/unnamed-chunk-6-3.pdf  used
- on input line 237.
+ on input line 277.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Project_files/figure-latex/unnamed-chunk-6-4.pdf, id=119, 469.755pt x 325.215p
+<Project_files/figure-latex/unnamed-chunk-6-4.pdf, id=123, 469.755pt x 325.215p
 t>
 File: Project_files/figure-latex/unnamed-chunk-6-4.pdf Graphic file (type pdf)
 <use Project_files/figure-latex/unnamed-chunk-6-4.pdf>
 Package pdftex.def Info: Project_files/figure-latex/unnamed-chunk-6-4.pdf  used
- on input line 238.
+ on input line 278.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 235--239
+Underfull \hbox (badness 10000) in paragraph at lines 275--279
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--279
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 235--239
+Underfull \hbox (badness 10000) in paragraph at lines 275--279
 []
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 235--239
-[]
- []
-
-[11]
-Overfull \vbox (29.24136pt too high) has occurred while \output is active []
-
-[12 <./Project_files/figure-latex/unnamed-chunk-6-1.pdf> <./Project_files/figur
-e-latex/unnamed-chunk-6-2.pdf>] [13 <./Project_files/figure-latex/unnamed-chunk
--6-3.pdf>] [14 <./Project_files/figure-latex/unnamed-chunk-6-4.pdf>] [15] [16] 
-[17] (Project.aux) ) 
+[11] [12 <./Project_files/figure-latex/unnamed-chunk-6-1.pdf>] [13 <./Project_f
+iles/figure-latex/unnamed-chunk-6-2.pdf>] [14 <./Project_files/figure-latex/unn
+amed-chunk-6-3.pdf>] [15 <./Project_files/figure-latex/unnamed-chunk-6-4.pdf>] 
+[16] [17] (Project.aux) ) 
 Here is how much of TeX's memory you used:
- 12768 strings out of 478864
- 195913 string characters out of 2848660
- 534449 words of memory out of 3000000
- 30312 multiletter control sequences out of 15000+600000
- 460223 words of font info for 123 fonts, out of 8000000 for 9000
+ 12717 strings out of 478864
+ 195029 string characters out of 2848660
+ 534507 words of memory out of 3000000
+ 30267 multiletter control sequences out of 15000+600000
+ 459905 words of font info for 122 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  74i,6n,80p,2413b,531s stack positions out of 5000i,500n,10000p,200000b,80000s
-{C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/enc/dvi
-ps/lm/lm-ec.enc}<C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/type1/publi
-c/lm/lmbx12.pfb><C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/type1/publi
-c/lm/lmr12.pfb><C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/lm/lmr17.pfb><C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/type1/public/
-lm/lmtt12.pfb>
-Output written on Project.pdf (17 pages, 459966 bytes).
+{C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/en
+c/dvips/lm/lm-ec.enc}<C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/type1/
+public/lm/lmbx12.pfb><C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/type1/
+public/lm/lmr12.pfb><C:/Users/casey/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/lm/lmr17.pfb>
+Output written on Project.pdf (17 pages, 443576 bytes).
 PDF statistics:
- 239 PDF objects out of 1000 (max. 8388607)
- 44 named destinations out of 1000 (max. 500000)
+ 245 PDF objects out of 1000 (max. 8388607)
+ 46 named destinations out of 1000 (max. 500000)
  30849 words of extra memory for PDF output out of 35830 (max. 10000000)
 

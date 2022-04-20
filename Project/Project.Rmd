@@ -17,8 +17,6 @@ mainfont: Times New Roman
 \newpage
 \tableofcontents 
 \newpage
-\listoftables 
-\newpage
 \listoffigures 
 \newpage
 
@@ -80,8 +78,6 @@ We derived demographic data from the US Census Bureau which we obtained through 
 In our exploratory analysis, we first examined the distribution of income levels across the state. Figure 1 shows there is a marked difference in median household income across counties in North Carolina. 
 
 ```{r, echo=FALSE, message=FALSE, fig.height=9, fig.cap="Median Household Income, NC"}
-
-min(censusData$MedianFamilyIncome)
 
 ggplot(censusData, aes(x=MedianFamilyIncome, y=reorder(CountyShort, MedianFamilyIncome))) +
   geom_point() + 
@@ -237,7 +233,7 @@ wealthier individuals.
 
 The figures below demonstrate the Residuals vs Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage analysis of the renewable energy regression conveying the fit of the regression analysis. 
 
-```{r echo=FALSE fig.cap="Renewable Regression Analysis"}
+```{r, echo=FALSE, fig.cap="Renewable Regression Analysis"}
 plot(renewable.reg)
 ```
 

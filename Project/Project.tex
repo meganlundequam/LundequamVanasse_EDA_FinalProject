@@ -82,8 +82,6 @@
 \newpage
 \tableofcontents 
 \newpage
-\listoftables 
-\newpage
 \listoffigures 
 \newpage
 
@@ -94,15 +92,15 @@ Questions}\label{rationale-and-research-questions}}
 Awareness of environmental injustice has been prevalent in North
 Carolina for decades. In fact, Warren County, a county just north of
 Durham, is widely recognized as the birthplace of today's environmental
-justice movement(\_\_\_\_\_). In the late 1980s, the National
+justice movement (O'Connell, 2016). In the late 1980s, the National
 Association for the Advancement of Colored People and others staged a
 protest against the state of North Carolina's decision to site a
-hazardous waste landfill in the predominantly colored
-county(\_\_\_\_\_). Although the protests failed to prevent the siting
+hazardous waste landfill in the predominantly colored county (Office of
+Legacy Management). Although the protests failed to prevent the siting
 of the disposal facility, the event shed light on environmental
 injustice trends with the EPA describing the movement in its 1994
 Environmental Equity Draft as ``the watershed event that led to the
-environmental equity movement of the 1980's'' (\_\_\_\_\_).
+environmental equity movement of the 1980's'' (O'Connell, 2016).
 
 In North Carolina and across the US, a common expression of
 environmental injustice is the disproportionate biased siting of locally
@@ -111,10 +109,10 @@ example of such a land use is energy production. The largest source of
 energy in the U.S. is fossil fuels and the burning of fossil fuels at
 power plants created emissions that can lead to respiratory and
 cardiovascular problems and increase the possibility of health issues
-ranging from cancer to immune system damage (\_\_\_\_\_). Minority,
-low-income, and indigenous populations frequently bear a
+ranging from cancer to immune system damage (Clean Air Markets).
+Minority, low-income, and indigenous populations frequently bear a
 disproportionate burden of these environmental harms and adverse health
-outcomes as a result of these siting trends (\_\_\_\_\_).
+outcomes as a result of these siting trends (Clean Air Markets).
 
 Due to a growing awareness of this trend and actions to combat
 environmental injustice across the U.S., it is necessary to examine the
@@ -186,10 +184,6 @@ In our exploratory analysis, we first examined the distribution of
 income levels across the state. Figure 1 shows there is a marked
 difference in median household income across counties in North Carolina.
 
-\begin{verbatim}
-## [1] 44909
-\end{verbatim}
-
 \begin{figure}
 \centering
 \includegraphics{Project_files/figure-latex/unnamed-chunk-1-1.pdf}
@@ -206,7 +200,11 @@ that generators powered by solar appear to be the most abundant, despite
 widespread knowledge that the predominant energy sources in the US are
 fossil fuels.
 
+\begin{figure}
+\centering
 \includegraphics{Project_files/figure-latex/unnamed-chunk-2-1.pdf}
+\caption{Energy Generation, NC}
+\end{figure}
 
 Figures 3 and 4 provide the context for interpreting the above figure.
 Figure 3 provides a breakdown of the number of individual generators
@@ -216,7 +214,11 @@ North Carolina. While the renewable-fueled generators are far greater in
 number, Figure 4 shows that the majority of energy production comes from
 fossil fuel sources.
 
+\begin{figure}
+\centering
 \includegraphics{Project_files/figure-latex/unnamed-chunk-3-1.pdf}
+\caption{Generators by fuel type}
+\end{figure}
 
 Figure 4 provides a visual representation of the aggregated energy
 production potential of the individual generators, using the nameplate
@@ -225,21 +227,17 @@ according to renewable versus fossil fuel categorization. This shows
 that the largest contributor to energy production in North Carolina is
 natural gas, followed by coal.
 
+\begin{figure}
+\centering
 \includegraphics{Project_files/figure-latex/unnamed-chunk-4-1.pdf}
+\caption{Nameplate capacity by fuel type}
+\end{figure}
 
 \newpage
 
 \hypertarget{analysis}{%
 \section{Analysis}\label{analysis}}
 
-<<<<<<< HEAD
-\includegraphics{Project_files/figure-latex/unnamed-chunk-6-1.pdf}
-\includegraphics{Project_files/figure-latex/unnamed-chunk-6-2.pdf}
-\includegraphics{Project_files/figure-latex/unnamed-chunk-6-3.pdf}
-\includegraphics{Project_files/figure-latex/unnamed-chunk-6-4.pdf}
-
-=======
->>>>>>> 0fdb167c805a0a62a4b7d2d1c3c19be3db40f22d
 For this analysis we used the generation site's nameplate capacity as
 the independent variable demonstrating the size, and assumed impact, to
 a community. We aggregated these values into three broad categories:
@@ -269,6 +267,10 @@ population that is a minority increases by 1.97\% (p-value = 0.0117).
 This is in line with what we hypothesized, because although renewable
 energy is often thought of as a luxury resource, the infrastructure
 still undergoes NIMBY criticism by many wealthier individuals.
+
+The figures below demonstrate the Residuals vs Fitted, Normal Q-Q,
+Scale-Location, and Residuals vs Leverage analysis of the renewable
+energy regression conveying the fit of the regression analysis.
 
 \includegraphics{Project_files/figure-latex/unnamed-chunk-6-1.pdf}
 \includegraphics{Project_files/figure-latex/unnamed-chunk-6-2.pdf}
@@ -325,7 +327,14 @@ portfolio evolves to embrace renewables.
 \hypertarget{references}{%
 \section{References}\label{references}}
 
-\textless add references here if relevant, otherwise delete this
-section\textgreater{}
+O'Connell, J., Hatch, E. \& Salyers, J. (2016). Inside NC: Birthplace of
+Environmental Justice. North Carolina Folklife Institute.
+\url{https://www.ncfolk.org/2017/inside-nc-birthplace-of-environmental-justice/}
+
+Office of Legacy Management. Environmental Justice History. Energy.gov.
+\url{https://www.energy.gov/lm/services/environmental-justice/environmental-justice-history}
+
+Clean Air Markets. Power Plants and Neighboring Communities. EPA.
+\url{https://www.energy.gov/lm/services/environmental-justice/environmental-justice-history}
 
 \end{document}
