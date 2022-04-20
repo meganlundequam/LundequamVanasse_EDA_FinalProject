@@ -183,15 +183,19 @@ gen.per.county <-
 write.csv(gen.per.county, row.names = FALSE, 
           file = "../Data/Processed/NumberGeneratorsPerCounty.csv")
 
+
+# Data table with the breakdown of energy type in each county
+fueltype.per.county <- 
+  full.data %>%
+  count(County, FuelType)
+
 ```
 
 
 ``` {r}
 
 #making plots with data
-###[plot with renewable v ff for each county]
 
-###[plot with nameplate capacity in some way]
 
 ```
 
