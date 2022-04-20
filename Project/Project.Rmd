@@ -159,7 +159,7 @@ print(Renewable.v.ff.cap)
 
 # Analysis
 
-```{r echo=FALSE}
+```{r include=FALSE}
 ## Reading files in 
 All.Energy <- read.csv("../Data/Processed/EnergyDataNCcounties.csv", stringsAsFactors = TRUE)
 FossilFuel.Energy <- read.csv("../Data/Processed/FFEnergyDataNCcounties.csv", stringsAsFactors = TRUE)
@@ -203,7 +203,8 @@ fossil.reg <-
        Per.MinorityMobility)
 summary(fossil.reg)
 
-
+```
+```{r echo=FALSE}
 plot(renewable.reg)
 ```
 
