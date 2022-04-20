@@ -180,7 +180,7 @@ renewable.reg.variables <-
        Per.MinorityMobility)
 
 ## AIC
-step(regression.variables)
+step(total.regression.variables)
 step(fossil.reg.variables)
 step(renewable.reg.variables)
 
@@ -204,11 +204,7 @@ fossil.reg <-
 summary(fossil.reg)
 
 
-
-
 plot(renewable.reg)
-
-
 ```
 
 
