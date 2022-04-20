@@ -125,7 +125,7 @@ ggplot() +
 
 Figures 3 and 4 provide the context for interpreting the above figure. Figure 3 provides a breakdown of the number of individual generators based on fuel type, coded according to whether or not that fuel type is considered a renewable fuel, a fossil fuel, or other, for the state of North Carolina. While the renewable-fueled generators are far greater in number, Figure 4 shows that the majority of energy production comes from fossil fuel sources. 
 
-```{r echo=FALSE, warning=FALSE}
+```{r echo=FALSE, warning=FALSE, fig.cap="Generators by fuel type"}
 
 full.data.gen <- read.csv("../Data/Processed/NCGenerator&Income.csv")
 
@@ -141,7 +141,7 @@ print(Renewable.v.ff.gen)
 
 Figure 4 provides a visual representation of the aggregated energy production potential of the individual generators, using the nameplate capacity for each generator, again based on fuel type and coded according to renewable versus fossil fuel categorization. This shows that the largest contributor to energy production in North Carolina is natural gas, followed by coal.
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Nameplate capacity by fuel type"}
 
 aggregated.gen.data.2 <- read.csv("../Data/Processed/NPCapByFuelType.csv")
 
@@ -205,9 +205,6 @@ summary(fossil.reg)
 
 
 ```
-```{r echo=FALSE}
-plot(renewable.reg)
-```
 
 
 For this analysis we used the generation site's nameplate capacity as the 
@@ -238,7 +235,11 @@ we hypothesized, because although renewable energy is often thought of as a
 luxury resource, the infrastructure still undergoes NIMBY criticism by many 
 wealthier individuals. 
 
+The figures below demonstrate the Residuals vs Fitted, Normal Q-Q, Scale-Location, and Residuals vs Leverage analysis of the renewable energy regression conveying the fit of the regression analysis. 
 
+```{r echo=FALSE fig.cap="Renewable Regression Analysis"}
+plot(renewable.reg)
+```
 
 \newpage
 
