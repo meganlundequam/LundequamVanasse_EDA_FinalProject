@@ -50,11 +50,11 @@ censusData = st_read("../Data/Processed/NC_county_complete.geojson")
 
 # Rationale and Research Questions
 
-Awareness of environmental injustice has been prevalent in North Carolina for decades. In fact, Warren County, a county just north of Durham, is widely recognized as the birthplace of today’s environmental justice movement. In the late 1980s, the National Association for the Advancement of Colored People and others staged a protest against the state of North Carolina’s decision to site a hazardous waste landfill in the predominantly colored county. Although the protests failed to prevent the siting of the disposal facility, the event shed light on environmental injustice trends with the EPA describing the movement in its 1994 Environmental Equity Draft as “the watershed event that led to the environmental equity movement of the 1980’s.”
+Awareness of environmental injustice has been prevalent in North Carolina for decades. In fact, Warren County, a county just north of Durham, is widely recognized as the birthplace of today’s environmental justice movement(_____). In the late 1980s, the National Association for the Advancement of Colored People and others staged a protest against the state of North Carolina’s decision to site a hazardous waste landfill in the predominantly colored county(_____). Although the protests failed to prevent the siting of the disposal facility, the event shed light on environmental injustice trends with the EPA describing the movement in its 1994 Environmental Equity Draft as “the watershed event that led to the environmental equity movement of the 1980’s” (_____).
 
-In North Carolina and across the US, a common expression of environmental injustice is the disproportionate amount of locally unwanted land uses sited next to low income and minority communities. An example of such a land use is energy production. The largest source of energy in the U.S. is fossil fuels and the burning of fossil fuels at power plants created emissions that can lead to respiratory and cardiovascular problems and increase the possibility of health issues ranging from cancer to immune system damage. Minority, low-income, and indigenous populations frequently bear a disproportionate burden of these environmental harms and adverse health outcomes as a result of these siting trends.
+In North Carolina and across the US, a common expression of environmental injustice is the disproportionate biased siting of locally unwanted land uses sited next to low income and minority communities. An example of such a land use is energy production. The largest source of energy in the U.S. is fossil fuels and the burning of fossil fuels at power plants created emissions that can lead to respiratory and cardiovascular problems and increase the possibility of health issues ranging from cancer to immune system damage (_____). Minority, low-income, and indigenous populations frequently bear a disproportionate burden of these environmental harms and adverse health outcomes as a result of these siting trends (_____).
 
-Due to a growing awareness of this trend and actions to combat environmental injustice across the U.S., it is necessary to examine the present day correlation of energy generators and minority, low income communities. This analysis explores the present day distribution of utilities in relation to the distribution of low income communities to investigate to what extent this correlation still exists. This analysis further explores if that trend is true for different energy types. We were interested to see if there was any difference in the distribution of fossil fuel based utilities versus that of renewable energy sources in relation to minority and low income communities. 
+Due to a growing awareness of this trend and actions to combat environmental injustice across the U.S., it is necessary to examine the present day correlation of energy generators and minority, low income communities. This analysis explores the current (2020) distribution of utilities in relation to the distribution of low income communities to investigate to what extent this correlation still exists. This analysis further explores if that trend is true for different energy types. We were interested to see if there was any difference in the distribution of fossil fuel based utilities versus that of renewable energy sources in relation to minority and low income communities. 
 
 ## Research Questions:
 
@@ -69,17 +69,16 @@ This study examines the following key questions:
 
 # Dataset Information
 
-The data used for this analysis falls into two categories, energy related data and demographic data. We derived energy related data from the US Energy Information Association and specifically focused on the location of energy production plants, the number of generators at those plants, the type of fuel used, and the nameplate capacity of the generators, a variable that represents the generator's maximum generation capacity in megawatts.
-[explain how we wrangled]
+The data used for this analysis falls into two categories, energy related data and demographic data. 
+We derived energy related data from the US Energy Information Association for the year 2020 (EIA-860 2020). The complete set of data files contains generator-level specific information for each year about existing and planned generators and associated environmental equipment at electric power plants with 1 megawatt or greater of combined nameplate capacity. The data sets utilized for this analysis include the plant-level data (2__Plant_Y2020.xlsx) and generator-level data (3_1_GeneratorY2020.xlsx) (where only data contained in the "operable" tab was analyzed). Geographic coordinates were obtained from the plant-level data set and combined with generator-level variables including Utility ID, Utility Name, Plant Code, Plant Name, State, County, Technology, Energy Source 1 (which represents the predominant energy that fuels the generator), and Nameplate Capacity (MW) (which represents the generator's maximum generation capacity in megawatts). 
 
-We derived demographic data from the US Census Bureau and specifically looked at the variables representing median household income by county, ___________.
-[explain how we wrangled]
+We derived demographic data from the US Census Bureau which we obtained through the tidycensus R package (API key = a8cad28557bae7c89aae6ea747549dd4816c6fbd) and specifically looked at the variables representing median household income, total population, the percent of the population with college degrees, the percent of the population at or below the poverty line, the percent of the population that is considered a 'minority' and the percent of the population that has received no schooling. For this analysis, we aggregated each of these variables by county.
 
 \newpage
 
 # Exploratory Analysis
 
-There is a marked difference in median household income across counties in North Carolina.
+In our exploratory analysis, we first examined the distribution of income levels across the state. Figure 1 shows there is a marked difference in median household income across counties in North Carolina. 
 
 ```{r, echo=FALSE, message=FALSE, fig.height=9}
 
@@ -87,12 +86,12 @@ ggplot(censusData[censusData$Year==2020,],
        aes(x=MedianFamilyIncome, y=reorder(CountyShort, MedianFamilyIncome))) +
   geom_point() + 
   scale_x_continuous(labels=comma) + 
-  labs(x="Median Household Income", y="NC Counties") + 
+  labs(title = "Figure 1. Distribution of Median Family Income Across NC Counties", x="Median Household Income", y="NC Counties") + 
   theme(text = element_text(size = 8))
 
 ```
 
-Energy generators are diverse in type and widespread throughout the state. Yet while solar appears to be the most abundant, it makes up small fraction of total energy generation.
+Figure 2 shows the different types of generators across North Carolina, defined by fuel type. The counties are coded based on the median family income in that county. Note that there does appear to be some overlap between generator location and lower income counties, however a clear pattern is not discernible based on this visual alone. Energy generators are diverse in type and widespread throughout the state. Also of note is that generators powered by solar appear to be the most abundant, despite widespread knowledge that the predominant energy sources in the US are fossil fuels.
 
 ```{r, echo=FALSE, results='hide', fig.height=7, fig.width=10}
 
@@ -119,32 +118,37 @@ ggplot() +
     "Wind" = "#80a6ff"
     )
   ) + 
-  labs(color="Generator Type", fill="Median Household Income") + 
+  labs(title = "Figure 2. Energy Generators and Income Levels in North Carolina Counties", color="Generator Type", fill="Median Household Income") + 
   theme_void() 
 
 ```
 
-The following bar charts show that although there is a greater number of generators generating renewable energy across the state of North Carolina, the majority of energy production (represented by nameplate capacity) comes from fossil fuel sources.
+Figures 3 and 4 provide the context for interpreting the above figure. Figure 3 provides a breakdown of the number of individual generators based on fuel type, coded according to whether or not that fuel type is considered a renewable fuel, a fossil fuel, or other, for the state of North Carolina. While the renewable-fueled generators are far greater in number, Figure 4 shows that the majority of energy production comes from fossil fuel sources. 
 
-``` {r}
+```{r echo=FALSE, warning=FALSE}
+
 full.data.gen <- read.csv("../Data/Processed/NCGenerator&Income.csv")
 
 ## Plot - number of generators by fuel type
 Renewable.v.ff.gen <-
   ggplot(data = full.data.gen, mapping = aes(x = FuelType, fill = Renewable.v.FossilFuel)) +
   geom_bar() +
-  labs(title = "Number of Generators by Fuel Type",
+  labs(title = "Figure 3. Number of Generators by Fuel Type",
        y = "Count", x = "Energy Generation Type") +
   theme(axis.text.x = element_text(angle = 45,  hjust = 1))
 print(Renewable.v.ff.gen)
+```
 
+Figure 4 provides a visual representation of the aggregated energy production potential of the individual generators, using the nameplate capacity for each generator, again based on fuel type and coded according to renewable versus fossil fuel categorization. This shows that the largest contributor to energy production in North Carolina is natural gas, followed by coal.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 aggregated.gen.data.2 <- read.csv("../Data/Processed/NPCapByFuelType.csv")
 
 ## Plot - nameplate capacity by fuel type
 Renewable.v.ff.cap <-
   ggplot(data = aggregated.gen.data.2) +
   geom_col(mapping = aes(x = FuelType, y = total.np.cap, fill = Renewable.v.FossilFuel)) +
-  labs(title = "Nameplate Capacity by Fuel Type",
+  labs(title = "Figure 4. Nameplate Capacity by Fuel Type",
        y = "Nameplate Capacity (MW)", x = "Energy Generation Type") +
   theme(axis.text.x = element_text(angle = 45,  hjust = 1))
 print(Renewable.v.ff.cap)
