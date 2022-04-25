@@ -15,112 +15,9 @@ library(lubridate)
 
 ```
 
-```{r FAILS - creating summary tables}
+## Creating plots
 
-generatorsCensusCategoriesCompSummary <- read.csv("../Data/Processed/generatorsCensusCategoriesComplete.csv", stringsAsFactors = TRUE)
-
-generatorsCensusCategoriesCompSummary$County.Short <- 
-
-generatorsCensusCategoriesCompSumm1 <- 
-  generatorsCensusCategoriesCompSummary %>%
-  select(Utility.ID, Utility.Name, County.Short, Fuel.Type, Renewable.v.FossilFuel)
-  group_by(generatorsCensusCategoriesCompSummary$County.Short) %>%
-  filter(!is.na(Utility.ID)) %>%
-  dplyr::summarise(n = count(Utility.ID))
-
-generatorsCensusCategoriesCompSumm2 <-
-  generatorsCensusCategoriesCompSumm1 %>%
-  dplyr::summarise(gen = cur_data(Fuel.Type))
-                   #TotalPlants = n(Utility.ID))
-                   
-
-```
-
-Create a second R chunk to create a summary dataset with the mean, minimum, maximum, and standard deviation of total nitrogen concentrations for each lake. Create a second summary dataset that is identical except that it evaluates total phosphorus. Customize the chunk options such that the code is run but not displayed in the final document.
-
-```{r LESSON FILE COPY OVER creating summary datasets, include=FALSE}
-
-NTL.nutrient.data.nitrogen.summary <-
-  NTL.nutrient.data %>%
-  group_by(lakename) %>% 
-  filter(!is.na(tn_ug)) %>%
-  dplyr::summarise(meannit = mean(tn_ug), 
-            maxnit = max(tn_ug), 
-            minnit = min(tn_ug), 
-            sdnit = sd(tn_ug))
-
-NTL.nutrient.data.phosphorus.summary <-
-  NTL.nutrient.data %>%
-  group_by(lakename) %>% 
-  filter(!is.na(tp_ug)) %>%
-  dplyr::summarise(meanphos = mean(tp_ug), 
-            maxphos = max(tp_ug), 
-            minphos = min(tp_ug), 
-            sdphos = sd(tp_ug))
-
-```
-
-
-Create a third R chunk that uses the function `kable` in the knitr package to display two tables: one for the summary dataframe for total N and one for the summary dataframe of total P. Use the `caption = " "` code within that function to title your tables. Customize the chunk options such that the final table is displayed but not the code used to generate the table.
-
-```{r LESSON FILE COPY OVER creating table with kable, echo=FALSE}
-
-knitr::kable(NTL.nutrient.data.nitrogen.summary,
-             caption = "Summary Statistics for Nitrogen Concentrations in NC Lakes")
-knitr::kable(NTL.nutrient.data.phosphorus.summary,
-             caption = "Summary Statistics for Phosphorus Concentrations in NC Lakes")
-
-```
-
-
-
-```{r LESSON FILE COPY OVER, warning = FALSE}
-# install.packages("viridis")
-# install.packages("RColorBrewer")
-# install.packages("colormap")
-library(viridis)
-library(RColorBrewer)
-library(colormap)
-
-scales::show_col(colormap(colormap = colormaps$viridis, nshades = 16))
-scales::show_col(colormap(colormap = colormaps$inferno, nshades = 16))
-scales::show_col(colormap(colormap = colormaps$magma, nshades = 16))
-display.brewer.all(n = 9)
-
-NvsP <-
-  ggplot(PeterPaul.chem.nutrients, aes(x = tp_ug, y = tn_ug, color = depth, shape = lakename)) +
-  geom_point() 
-print(NvsP)
-
-# let's first make the plot look better.
-# change your axis labels to reflect TN and TP in micrograms per liter.
-# change your legend labels
-NvsP2 <-
-  ggplot(PeterPaul.chem.nutrients, aes(x = tp_ug, y = tn_ug, color = depth, shape = lakename)) +
-  geom_point(alpha = 0.7, size = 2.5) +
-  #labs() + # change your legend labels here
-  scale_shape_manual(values = c(15, 17)) +
-  #scale_color_distiller(palette = "Blues", direction = 1) + # use scale_color_brewer for discrete variables
-  scale_color_viridis(option = "magma", direction = -1) +
-  theme(legend.position = "right", 
-        legend.text = element_text(size = 12), legend.title = element_text(size = 12))
-print(NvsP2)
-
-# change your y axis label to list concentration in micrograms per liter
-# remove your x axis label
-# change labels for nutrients in the legend
-# try out the different color palette options and choose one (or edit)
-Nutrientplot <-
-  ggplot(PeterPaul.chem.nutrients.gathered, aes(x = lakename, y = concentration, color = nutrient)) +
-  geom_boxplot() +
-# place your additional edits here
-  scale_y_continuous(expand = c(0, 0)) +
-  #scale_color_brewer(palette = "YlGnBu") +
-  #scale_color_manual(values = c("#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#0c2c84")) +
-  #scale_color_viridis(discrete = TRUE, end = 0.8) +
-  theme(legend.position = "right")
-print(Nutrientplot)
-```
+Creating plots to display the breakdown of number of generators and energy capacity of generators to show difference
 
 ```{r MAKING PLOTS - KEEP, warning=FALSE}
 # install.packages("viridis")
@@ -173,7 +70,7 @@ ggsave("./Output/RvFPlot_Cap.jpg", Renewable.v.ff.cap, dpi = 300)
 
 ```
 
-```{r summary tables}
+```{r summary tables - did not include in final report}
 library(tidyverse)
 library(dplyr)
 library(kableExtra)
@@ -190,23 +87,6 @@ county.gen.summary <-
   group_by(County) %>%
   summarise(gen_per_county = sum(n)) %>%
   ungroup()
-
-# joining datasets
-fueltype.per.county.spread.total <-
-  left_join(fueltype.per.county.spread,county.gen.summary)
-
-#creating summary table with percentages
-county.fueltype.percent <-
-  fueltype.per.county.spread.total %>%
-  group_by(County) %>%
-  summarise(across(c(Hydroelectric:Wind), ~ .x/gen_per_county, .names = 'percent_{col}'))
-
-RvF.per.county <-
-  full.data.gen %>%
-  group_by(County) %>%
-  summarise()
-
-#can do pivot longer to get renewable
 
 county.gen.summary <-
   aggregated.gen.data.2 %>%

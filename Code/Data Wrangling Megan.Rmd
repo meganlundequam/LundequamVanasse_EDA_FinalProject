@@ -22,7 +22,7 @@ library(dplyr)
 
 ```
 
-## Wrangling
+## Wrangling to combine spatial coordinates from Plant data with variables of interest in Generator data
 ```{r}
 energy.data.plant <- read.csv("../Data/Raw/2___Plant_Y2020_ready.csv", fileEncoding='UTF-8-BOM')
 
@@ -90,8 +90,10 @@ ggplot() + geom_sf(data=NCGenerators.sf,aes(color= Technology))
 ```
 
 
+## Creating generatorsCensusCategoriesComplete dataset
 
-categorize 
+Adding a column to the data set to denote the type of fuel according to the energy source code and another column to denote whether the energy source is a rewnewable energy source or fossil fuel.
+
 ```{r}
 generatorsCensus2020 = st_read("../Data/Processed/generatorsCensus2020.geojson")
 generatorsCensusNoGeometry = st_drop_geometry(generatorsCensus2020)
@@ -146,6 +148,8 @@ write.csv(generatorsCensusCategoriesComplete, row.names = FALSE,
 
 ```
 
+## Aggretating and Wrangling Data Cont.
+
 ```{r}
 
 additional.census <- read.csv("../Data/Processed/UpdatedCensus.csv", stringsAsFactors = TRUE) 
@@ -193,39 +197,6 @@ fueltype.per.county <-
   full.data.gen %>%
   count(County, FuelType)
 
-```
-
-
-``` {r}
-
-
-
-
-```
-
-``` {r dont run - this is a fail}
-## failed attempt
-generators.per.county <-
-  aggregated.gen.data.plant.total %>%
-  group_by(County, Renewable.v.FossilFuel) %>%
-  #dplyr::mutate(Num.Gen = as.numeric(as.character(Number.of.Generators$Number.of.Generators.freq)))
-  dplyr::mutate(Total.Generators = group_keys(aggregated.gen.data.plant.total$.rows))
-
-##
-generators.per.county.join <-
-  full_join(aggregated.gen.data.plant.total, group_keys(Number.of.Generators))
-
-
-generators.per.county <-
-  aggregated.gen.data.plant.total %>%
-  group_by(County, Renewable.v.FossilFuel) %>%
-  dplyr::summarise(Generators = n())
-
-## Aggregating the generator data so that it groups all of it by county and by number of plants
-aggregated.gen.data.plant.total <- 
-  full.data.gen %>%
-  group_by(County, Renewable.v.FossilFuel) %>%
-  dplyr::summarise(Number.of.Generators = count(Plant.Name))
 ```
 
 
